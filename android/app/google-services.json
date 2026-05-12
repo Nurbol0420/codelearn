@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "228099776960",
+    "project_id": "coden-2e07a",
+    "storage_bucket": "coden-2e07a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:228099776960:android:e04086863f7b955eabe825",
+        "android_client_info": {
+          "package_name": "com.example.codelearn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "228099776960-pbcb7fs873tphininum1h9ttij053n8i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASEYwpMs4Xcs1jkB8L_UbsG8Hgfg5LjD0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "228099776960-pbcb7fs873tphininum1h9ttij053n8i.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "228099776960-ue6on8dmea562p3a0smvt3qjitui9kqc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.codelearn"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:228099776960:android:2fdd75f4660c5df8abe825",
+        "android_client_info": {
+          "package_name": "com.example.coding_tracker_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "228099776960-pbcb7fs873tphininum1h9ttij053n8i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASEYwpMs4Xcs1jkB8L_UbsG8Hgfg5LjD0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "228099776960-pbcb7fs873tphininum1h9ttij053n8i.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "228099776960-ue6on8dmea562p3a0smvt3qjitui9kqc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.codelearn"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
