@@ -5,7 +5,7 @@ import 'package:codelearn/core/theme/app_color.dart';
 import 'package:codelearn/models/question.dart';
 import 'package:codelearn/models/quiz.dart';
 import 'package:codelearn/models/quiz_attempt.dart';
-import 'package:codelearn/services/dummy_data_service.dart';
+import 'package:codelearn/repositories/quiz_repository.dart';
 import 'package:codelearn/view/quiz/quiz_attempt/widgets/quiz_attempt_app_bar.dart';
 import 'package:codelearn/view/quiz/quiz_attempt/widgets/quiz_navigation_bar.dart';
 import 'package:codelearn/view/quiz/quiz_attempt/widgets/quiz_question_page.dart';
@@ -23,11 +23,11 @@ class QuizAttemptScreen extends StatefulWidget {
 }
 
 class _QuizAttemptScreenState extends State<QuizAttemptScreen> {
-  late final Quiz quiz;
+  Quiz? _quiz;
+  bool _isLoadingQuiz = true;
+  final _quizRepo = QuizRepository();
 
-  /// Shuffled questions shown to this student.
-  /// Each entry: { question, shuffledOptions, correctOptionId }
-  late final List<_ShuffledQuestion> _shuffled;
+  List<_ShuffledQuestion> _shuffled = [];
 
   late final PageController _pageController;
   int _currentPage = 0;
@@ -39,23 +39,9 @@ class _QuizAttemptScreenState extends State<QuizAttemptScreen> {
   @override
   void initState() {
     super.initState();
-    quiz = DummyDataService.getQuizById(widget.quizId);
-
-    // Shuffle options for every question once, keep track of correct answer
-    final rng = Random();
-    _shuffled = quiz.questions.map((q) {
-      final opts = List<Option>.from(q.options)..shuffle(rng);
-      return _ShuffledQuestion(
-        question: q,
-        shuffledOptions: opts,
-        correctOptionId: q.correctOptionID,
-      );
-    }).toList();
-
+    _loadQuiz();
     _pageController = PageController();
     _pageController.addListener(_onPageChanged);
-    remainingSeconds = quiz.timeLimit * 60;
-    _startTimer();
   }
 
   @override
@@ -66,6 +52,35 @@ class _QuizAttemptScreenState extends State<QuizAttemptScreen> {
     super.dispose();
   }
 
+  Future<void> _loadQuiz() async {
+    try {
+      final quizzes = await _quizRepo.getQuizzes();
+      final quiz = quizzes.firstWhere(
+        (q) => q.id == widget.quizId,
+        orElse: () => throw Exception('Quiz not found'),
+      );
+      if (!mounted) return;
+      setState(() {
+        _quiz = quiz;
+        _isLoadingQuiz = false;
+        _shuffled = quiz.questions.map((q) {
+          final opts = List<Option>.from(q.options)..shuffle(Random());
+          return _ShuffledQuestion(
+            question: q,
+            shuffledOptions: opts,
+            correctOptionId: q.correctOptionID,
+          );
+        }).toList();
+        remainingSeconds = _quiz!.timeLimit * 60;
+      });
+      _startTimer();
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _isLoadingQuiz = false);
+      Get.back();
+    }
+  }
+
   void _onPageChanged() {
     if (_pageController.page != null) {
       setState(() => _currentPage = _pageController.page!.round());
@@ -73,8 +88,11 @@ class _QuizAttemptScreenState extends State<QuizAttemptScreen> {
   }
 
   void _navigateToPage(int page) {
-    _pageController.animateToPage(page,
-        duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+    _pageController.animateToPage(
+      page,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
   }
 
   void _startTimer() {
@@ -90,9 +108,6 @@ class _QuizAttemptScreenState extends State<QuizAttemptScreen> {
   int _calculateScore() {
     int score = 0;
     for (final sq in _shuffled) {
-      // selectedAnswers stores the shuffled option id the student tapped
-      // correctOptionId is the ORIGINAL 'a' id
-      // We need to compare by option TEXT to be safe
       final selectedId = selectedAnswers[sq.question.id];
       if (selectedId != null) {
         final selectedOption = sq.shuffledOptions.firstWhere(
@@ -111,22 +126,22 @@ class _QuizAttemptScreenState extends State<QuizAttemptScreen> {
     return score;
   }
 
-  void _submitQuiz() {
+  Future<void> _submitQuiz() async {
     _timer?.cancel();
     final score = _calculateScore();
     currentAttempt = QuizAttempt(
       id: DateTime.now().microsecondsSinceEpoch.toString(),
-      quizId: quiz.id,
+      quizId: _quiz!.id,
       userId: 'current_user',
       answers: selectedAnswers,
       score: score,
       startedAt: DateTime.now()
-          .subtract(Duration(seconds: quiz.timeLimit * 60 - remainingSeconds)),
+          .subtract(Duration(seconds: _quiz!.timeLimit * 60 - remainingSeconds)),
       completedAt: DateTime.now(),
-      timeSpent: quiz.timeLimit * 60 - remainingSeconds,
+      timeSpent: _quiz!.timeLimit * 60 - remainingSeconds,
     );
-    DummyDataService.saveQuizAttempt(currentAttempt!);
-    Get.off(() => QuizResultScreen(attempt: currentAttempt!, quiz: quiz));
+    await _quizRepo.saveAttempt(currentAttempt!);
+    Get.off(() => QuizResultScreen(attempt: currentAttempt!, quiz: _quiz!));
   }
 
   void _selectAnswer(String questionId, String optionId) {
@@ -148,30 +163,31 @@ class _QuizAttemptScreenState extends State<QuizAttemptScreen> {
         formattedTime: formattedTime,
         onSubmit: () => _showSubmitDialog(context),
       ),
-      body: PageView.builder(
-        controller: _pageController,
-        physics: const BouncingScrollPhysics(),
-        itemCount: _shuffled.length,
-        itemBuilder: (context, index) {
-          final sq = _shuffled[index];
-          // Build a Question with shuffled options to pass to the page widget
-          final displayQuestion = Question(
-            id: sq.question.id,
-            text: sq.question.text,
-            options: sq.shuffledOptions,
-            correctOptionID: sq.correctOptionId,
-            points: sq.question.points,
-          );
-          return QuizQuestionPage(
-            questionNumber: index + 1,
-            totalQuestion: _shuffled.length,
-            question: displayQuestion,
-            selectedOptionId: selectedAnswers[sq.question.id],
-            onOptionSelected: (optionId) =>
-                _selectAnswer(sq.question.id, optionId),
-          );
-        },
-      ),
+      body: _isLoadingQuiz
+          ? const Center(child: CircularProgressIndicator())
+          : PageView.builder(
+              controller: _pageController,
+              physics: const BouncingScrollPhysics(),
+              itemCount: _shuffled.length,
+              itemBuilder: (context, index) {
+                final sq = _shuffled[index];
+                final displayQuestion = Question(
+                  id: sq.question.id,
+                  text: sq.question.text,
+                  options: sq.shuffledOptions,
+                  correctOptionID: sq.correctOptionId,
+                  points: sq.question.points,
+                );
+                return QuizQuestionPage(
+                  questionNumber: index + 1,
+                  totalQuestion: _shuffled.length,
+                  question: displayQuestion,
+                  selectedOptionId: selectedAnswers[sq.question.id],
+                  onOptionSelected: (optionId) =>
+                      _selectAnswer(sq.question.id, optionId),
+                );
+              },
+            ),
       bottomNavigationBar: QuizNavigationBar(
         theme: theme,
         onPreviousPressed:
@@ -188,20 +204,19 @@ class _QuizAttemptScreenState extends State<QuizAttemptScreen> {
     final score = _calculateScore();
     currentAttempt = QuizAttempt(
       id: DateTime.now().microsecondsSinceEpoch.toString(),
-      quizId: quiz.id,
+      quizId: _quiz!.id,
       userId: 'current_user',
       answers: selectedAnswers,
       score: score,
       startedAt: DateTime.now()
-          .subtract(Duration(seconds: quiz.timeLimit * 60 - remainingSeconds)),
-      timeSpent: quiz.timeLimit * 60 - remainingSeconds,
+          .subtract(Duration(seconds: _quiz!.timeLimit * 60 - remainingSeconds)),
+      timeSpent: _quiz!.timeLimit * 60 - remainingSeconds,
       completedAt: DateTime.now(),
     );
-    DummyDataService.saveQuizAttempt(currentAttempt!);
     return showDialog(
       context: context,
       builder: (context) =>
-          QuizSubmitDialog(attempt: currentAttempt!, quiz: quiz),
+          QuizSubmitDialog(attempt: currentAttempt!, quiz: _quiz!),
     );
   }
 }
