@@ -15,7 +15,7 @@ class AuthRepository {
   })  : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
         _firestore = firestore ?? FirebaseFirestore.instance,
         _googleSignIn = googleSignIn ??
-            GoogleSignIn(
+              GoogleSignIn(
               scopes: ['email'],
             );
 

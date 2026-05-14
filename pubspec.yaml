@@ -54,6 +54,12 @@ dev_dependencies:
 flutter:
   generate: true
   uses-material-design: true
+  assets:
+    - assets/images/onboarding/
+
+
+
+
   # Мұндағы assets бөлімі бос болса, қате бермеуі үшін түсіндірме (comment) ретінде қалдырдым немесе астына қосыңыз
 
 # БҰЛ БӨЛІМ ЕҢ ШЕТТЕ (СОЛ ЖАҚТА) ТҰРУЫ КЕРЕК:
