@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:codelearn/l10n/app_localizations.dart';
 
 class ReviewsSection extends StatefulWidget {
   final String courseId;
@@ -32,6 +33,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
   }
 
   Future<void> _loadReviews() async {
+    final l10n = AppLocalizations.of(context)!;
     if (!mounted) return;
     setState(() {
       _isLoading = true;
@@ -49,7 +51,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
       if (!mounted) return;
       setState(() {
         _isLoading = false;
-        _error = 'Failed to load reviews. Please try again later.';
+        _error = l10n.failedToLoadReviews;
       });
     }
   }
@@ -69,11 +71,12 @@ class _ReviewsSectionState extends State<ReviewsSection> {
   }
 
   Future<void> _handleReviewAction(Map<String, dynamic> result) async {
+    final l10n = AppLocalizations.of(context)!;
     final currentUser = _auth.currentUser;
     if (currentUser == null) {
       Get.snackbar(
-        'Error',
-        'Please sign in to review',
+        l10n.error,
+        l10n.pleaseSignInToReview,
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
@@ -149,8 +152,8 @@ class _ReviewsSectionState extends State<ReviewsSection> {
     } catch (e) {
       setState(() => _isLoading = false);
       Get.snackbar(
-        'Error',
-        'Failed to submit review. Please try again later.',
+        l10n.error,
+        l10n.failedToSubmitReview,
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
@@ -158,20 +161,22 @@ class _ReviewsSectionState extends State<ReviewsSection> {
   }
 
   String _getSuccessMessage(String action) {
+    final l10n = AppLocalizations.of(context)!;
     switch (action) {
       case 'add':
-        return 'Thank you for your review!';
+        return l10n.reviewSubmitted;
       case 'update':
-        return 'Your review has been updated!';
+        return l10n.reviewUpdated;
       case 'delete':
-        return 'Your review has been deleted!';
+        return l10n.reviewDeleted;
       default:
-        return 'Action completed successfully!';
+        return l10n.actionCompleted;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final currentUser = _auth.currentUser;
     final userReview = currentUser != null
@@ -232,14 +237,14 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'No reviews yet. ',
+                  l10n.noReviewsYet,
                   style: theme.textTheme.bodyLarge?.copyWith(
                     color: AppColors.secondary,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Be the first to write a review!',
+                  l10n.beFirstToMessage,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: AppColors.secondary.withValues(alpha: 0.7),
                   ),

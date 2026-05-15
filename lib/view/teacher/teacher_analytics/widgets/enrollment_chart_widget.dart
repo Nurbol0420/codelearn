@@ -1,4 +1,5 @@
-import 'package:codelearn/services/dummy_data_service.dart';
+import 'package:codelearn/models/course.dart';
+import 'package:codelearn/repositories/course_repository.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -6,7 +7,9 @@ import '../../../../core/theme/app_color.dart';
 
 class EnrollmentChartWidget extends StatelessWidget {
   final String instructorID;
-  const EnrollmentChartWidget({super.key, required this.instructorID});
+  EnrollmentChartWidget({super.key, required this.instructorID});
+
+  final CourseRepository _courseRepository = CourseRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -41,15 +44,34 @@ class EnrollmentChartWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-          SizedBox(height: 200, child: _buildEnrollmentLineChart()),
+          SizedBox(
+            height: 200,
+            child: FutureBuilder<List<Course>>(
+              future: _courseRepository.getInstructorCourses(instructorID),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                final courses = snapshot.data ?? [];
+                if (courses.isEmpty) {
+                  return const Center(child: Text('No course data yet'));
+                }
+
+                return _buildEnrollmentLineChart(courses);
+              },
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildEnrollmentLineChart() {
-    final stats = DummyDataService.getTeacherStats(instructorID);
-    final enrollments = stats.monthlyEnrollments;
+  Widget _buildEnrollmentLineChart(List<Course> courses) {
+    final chartCourses = courses.take(6).toList();
+    final enrollments = chartCourses
+        .map((course) => course.enrollmentCount)
+        .toList();
 
     final spots = List.generate(
       enrollments.length,
@@ -81,12 +103,12 @@ class EnrollmentChartWidget extends StatelessWidget {
               interval: 1,
               reservedSize: 28,
               getTitlesWidget: (value, meta) {
-                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-                if (value.toInt() >= 0 && value.toInt() < months.length) {
+                if (value.toInt() >= 0 && value.toInt() < chartCourses.length) {
+                  final title = chartCourses[value.toInt()].title;
                   return Padding(
                     padding: const EdgeInsets.only(top: 6),
                     child: Text(
-                      months[value.toInt()],
+                      title.length > 8 ? '${title.substring(0, 8)}...' : title,
                       style: const TextStyle(
                         fontSize: 12,
                         color: Colors.black87,
@@ -124,7 +146,9 @@ class EnrollmentChartWidget extends StatelessWidget {
         minX: 0,
         maxX: (enrollments.length - 1).toDouble(),
         minY: 0,
-        maxY: enrollments.reduce((a, b) => a > b ? a : b) * 1.2,
+        maxY: (enrollments.reduce((a, b) => a > b ? a : b) * 1.2)
+            .clamp(1, double.infinity)
+            .toDouble(),
 
         lineTouchData: LineTouchData(
           enabled: true,

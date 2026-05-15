@@ -23,9 +23,10 @@ class UserModel {
     required this.role,
   });
 
-
   factory UserModel.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
+    final createdAt = data['createdAt'] ?? data['createAt'];
+    final lastLoginAt = data['lastLoginAt'] ?? data['lastloginAt'];
     return UserModel(
       uid: doc.id,
       email: data['email'] ?? '',
@@ -33,10 +34,12 @@ class UserModel {
       photoUrl: data['photoUrl'],
       phoneNumber: data['phoneNumber'],
       bio: data['bio'],
-      createdAt: (data['createAt'] as Timestamp).toDate(),
-      lastloginAt: (data['lastloginAt'] as Timestamp).toDate(),
+      createdAt: createdAt is Timestamp ? createdAt.toDate() : DateTime.now(),
+      lastloginAt: lastLoginAt is Timestamp
+          ? lastLoginAt.toDate()
+          : DateTime.now(),
       role: UserRole.values.firstWhere(
-            (e) => e.name == data['role'],
+        (e) => e.name == data['role'],
         orElse: () => UserRole.student,
       ),
     );
@@ -49,8 +52,8 @@ class UserModel {
       'photoUrl': photoUrl,
       'phoneNumber': phoneNumber,
       'bio': bio,
-      'createAt': Timestamp.fromDate(createdAt),
-      'lastloginAt': Timestamp.fromDate(lastloginAt),
+      'createdAt': Timestamp.fromDate(createdAt),
+      'lastLoginAt': Timestamp.fromDate(lastloginAt),
       'role': role.name,
     };
   }

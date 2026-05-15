@@ -31,7 +31,7 @@ class CourseRepository {
       if (!doc.exists) {
         throw Exception('Course not found');
       }
-      final data = doc.data() as Map<String, dynamic>?;
+      final data = doc.data();
       if (data == null) {
         throw Exception('Course data is null');
       }
@@ -338,6 +338,32 @@ class CourseRepository {
     }
   }
 
+  Future<Set<String>> getEnrolledCourseIds(String studentId) async {
+    try {
+      final byStudentId = await _firestore
+          .collection('enrollments')
+          .where('studentId', isEqualTo: studentId)
+          .get();
+      final byUserId = await _firestore
+          .collection('enrollments')
+          .where('userID', isEqualTo: studentId)
+          .get();
+
+      final courseIds = <String>{};
+      for (final doc in [...byStudentId.docs, ...byUserId.docs]) {
+        final data = doc.data();
+        final courseId = data['courseId'] ?? data['courseID'];
+        if (courseId is String && courseId.isNotEmpty) {
+          courseIds.add(courseId);
+        }
+      }
+
+      return courseIds;
+    } catch (e) {
+      throw Exception('Failed to fetch enrolled courses: $e');
+    }
+  }
+
   Future<bool> isCourseCompleted(String courseId, String studentId) async {
     try {
       final course = await getCourseDetail(courseId);
@@ -346,7 +372,7 @@ class CourseRepository {
       final completedLessons = await getCompletedLessons(courseId, studentId);
 
       return completedLessons.length == totalLessons;
-    }catch (e) {
+    } catch (e) {
       throw Exception('Failed to check course completion status: $e');
     }
   }

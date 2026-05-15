@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:codelearn/models/question.dart';
+import 'package:codelearn/repositories/course_repository.dart';
 import 'package:codelearn/models/quiz.dart';
 import 'package:codelearn/models/quiz_attempt.dart';
 
 class QuizRepository {
   final _firestore = FirebaseFirestore.instance;
+  final _courseRepository = CourseRepository();
 
   // ─── Quiz CRUD ────────────────────────────────────────────────────────────
 
@@ -35,12 +36,36 @@ class QuizRepository {
   Future<List<Quiz>> getQuizzes() async {
     try {
       final snapshot = await _firestore.collection('quizzes').get();
-      return snapshot.docs.map((doc) {
+      final quizzes = snapshot.docs.map((doc) {
         return Quiz.fromJson({...doc.data(), 'id': doc.id});
       }).toList();
+      quizzes.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      return quizzes;
     } catch (e) {
       throw Exception('Викториналарды алу мүмкін болмады: $e');
     }
+  }
+
+  Future<List<Quiz>> getQuizzesByInstructor(String instructorId) async {
+    final quizzes = await getQuizzes();
+    return quizzes.where((quiz) => quiz.instructorId == instructorId).toList();
+  }
+
+  Future<List<Quiz>> getQuizzesForStudent(String studentId) async {
+    final enrolledCourseIds = await _courseRepository.getEnrolledCourseIds(
+      studentId,
+    );
+    if (enrolledCourseIds.isEmpty) return [];
+
+    final quizzes = await getQuizzes();
+    return quizzes
+        .where(
+          (quiz) =>
+              quiz.isActive &&
+              quiz.courseId.isNotEmpty &&
+              enrolledCourseIds.contains(quiz.courseId),
+        )
+        .toList();
   }
 
   // ─── Quiz Attempts ────────────────────────────────────────────────────────
@@ -63,11 +88,12 @@ class QuizRepository {
       final snapshot = await _firestore
           .collection('quiz_attempts')
           .where('userId', isEqualTo: userId)
-          .orderBy('completedAt', descending: true)
           .get();
-      return snapshot.docs.map((doc) {
+      final attempts = snapshot.docs.map((doc) {
         return QuizAttempt.fromJson({...doc.data(), 'id': doc.id});
       }).toList();
+      attempts.sort(_compareAttemptsByCompletedAtDesc);
+      return attempts;
     } catch (e) {
       throw Exception('Викторинаны жасау мүмкін болмады: $e');
     }
@@ -79,14 +105,20 @@ class QuizRepository {
       final snapshot = await _firestore
           .collection('quiz_attempts')
           .where('quizId', isEqualTo: quizId)
-          .orderBy('completedAt', descending: true)
           .get();
-      return snapshot.docs.map((doc) {
+      final attempts = snapshot.docs.map((doc) {
         return QuizAttempt.fromJson({...doc.data(), 'id': doc.id});
       }).toList();
+      attempts.sort(_compareAttemptsByCompletedAtDesc);
+      return attempts;
     } catch (e) {
       throw Exception('Викторинаны жасау мүмкін болмады: $e');
     }
   }
-}
 
+  int _compareAttemptsByCompletedAtDesc(QuizAttempt a, QuizAttempt b) {
+    final aDate = a.completedAt ?? a.startedAt;
+    final bDate = b.completedAt ?? b.startedAt;
+    return bDate.compareTo(aDate);
+  }
+}

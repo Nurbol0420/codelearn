@@ -1,15 +1,16 @@
 import 'package:codelearn/core/theme/app_color.dart';
-import 'package:codelearn/services/dummy_data_service.dart';
+import 'package:codelearn/models/course.dart';
+import 'package:codelearn/repositories/course_repository.dart';
 import 'package:flutter/material.dart';
 
 class StudentEngagementWidget extends StatelessWidget {
   final String instructorID;
-  const StudentEngagementWidget({super.key, required this.instructorID});
+  StudentEngagementWidget({super.key, required this.instructorID});
+
+  final CourseRepository _courseRepository = CourseRepository();
 
   @override
   Widget build(BuildContext context) {
-    final stats = DummyDataService.getTeacherStats(instructorID);
-    final engagement = stats.studentEngagement;
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -31,22 +32,48 @@ class StudentEngagementWidget extends StatelessWidget {
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 24),
-          _buildEngagementMetric(
-            'Average Completion Rate',
-            '${(engagement.averageCompletionRate * 100).toInt()}%',
-            Icons.school,
-          ),
-          Divider(height: 32, color: Colors.grey.shade300),
-          _buildEngagementMetric(
-            'Average Time per Lesson',
-            '${engagement.averageTimePerLesson} mins',
-            Icons.school,
-          ),
-          Divider(height: 32, color: Colors.grey.shade300),
-          _buildEngagementMetric(
-            'Active Student this Week',
-            engagement.activeStudentsThisWeek.toString(),
-            Icons.people,
+          FutureBuilder<List<Course>>(
+            future: _courseRepository.getInstructorCourses(instructorID),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              final courses = snapshot.data ?? [];
+              final totalStudents = courses.fold<int>(
+                0,
+                (sum, course) => sum + course.enrollmentCount,
+              );
+              final totalLessons = courses.fold<int>(
+                0,
+                (sum, course) => sum + course.lessons.length,
+              );
+              final premiumCourses = courses
+                  .where((course) => course.isPremium)
+                  .length;
+
+              return Column(
+                children: [
+                  _buildEngagementMetric(
+                    'Enrolled Students',
+                    totalStudents.toString(),
+                    Icons.people,
+                  ),
+                  Divider(height: 32, color: Colors.grey.shade300),
+                  _buildEngagementMetric(
+                    'Published Lessons',
+                    totalLessons.toString(),
+                    Icons.school,
+                  ),
+                  Divider(height: 32, color: Colors.grey.shade300),
+                  _buildEngagementMetric(
+                    'Premium Courses',
+                    premiumCourses.toString(),
+                    Icons.workspace_premium,
+                  ),
+                ],
+              );
+            },
           ),
         ],
       ),

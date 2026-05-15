@@ -3,6 +3,7 @@ import 'package:codelearn/models/quiz.dart';
 import 'package:codelearn/repositories/quiz_repository.dart';
 import 'package:codelearn/view/quiz/quiz_history/quiz_history_screen.dart';
 import 'package:codelearn/view/quiz/quiz_list/widgets/quiz_card.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:codelearn/l10n/app_localizations.dart';
 import 'package:get/get.dart';
@@ -28,7 +29,10 @@ class _QuizListScreenState extends State<QuizListScreen> {
 
   Future<void> _loadQuizzes() async {
     try {
-      final quizzes = await _repo.getQuizzes();
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+      final quizzes = userId == null
+          ? <Quiz>[]
+          : await _repo.getQuizzesForStudent(userId);
       setState(() {
         _quizzes = quizzes;
         _isLoading = false;
@@ -71,7 +75,9 @@ class _QuizListScreenState extends State<QuizListScreen> {
               title: Text(
                 l10n.quizzes,
                 style: theme.textTheme.headlineMedium?.copyWith(
-                    color: AppColors.accent, fontWeight: FontWeight.bold),
+                  color: AppColors.accent,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               background: Container(
                 decoration: const BoxDecoration(
@@ -95,16 +101,25 @@ class _QuizListScreenState extends State<QuizListScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.error_outline,
-                        size: 64, color: Colors.red.shade300),
+                    Icon(
+                      Icons.error_outline,
+                      size: 64,
+                      color: Colors.red.shade300,
+                    ),
                     const SizedBox(height: 12),
-                    Text(l10n.error,
-                        style: const TextStyle(
-                            color: Colors.red, fontWeight: FontWeight.bold)),
+                    Text(
+                      l10n.error,
+                      style: const TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     const SizedBox(height: 8),
-                    Text(_error!,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.grey.shade600)),
+                    Text(
+                      _error!,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.grey.shade600),
+                    ),
                     const SizedBox(height: 20),
                     ElevatedButton.icon(
                       onPressed: () {
@@ -117,8 +132,9 @@ class _QuizListScreenState extends State<QuizListScreen> {
                       icon: const Icon(Icons.refresh),
                       label: Text(l10n.retry),
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          foregroundColor: Colors.white),
+                        backgroundColor: AppColors.primary,
+                        foregroundColor: Colors.white,
+                      ),
                     ),
                   ],
                 ),
@@ -130,13 +146,17 @@ class _QuizListScreenState extends State<QuizListScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.quiz_outlined,
-                        size: 72, color: Colors.grey.shade300),
+                    Icon(
+                      Icons.quiz_outlined,
+                      size: 72,
+                      color: Colors.grey.shade300,
+                    ),
                     const SizedBox(height: 16),
                     Text(
                       l10n.noQuizzesYet,
-                      style: theme.textTheme.titleMedium
-                          ?.copyWith(color: Colors.grey),
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: Colors.grey,
+                      ),
                     ),
                   ],
                 ),
@@ -146,22 +166,19 @@ class _QuizListScreenState extends State<QuizListScreen> {
             SliverPadding(
               padding: const EdgeInsets.all(20),
               sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    final quiz = _quizzes[index];
-                    return QuizCard(
-                      title: quiz.title,
-                      description: quiz.description,
-                      questionCount: quiz.questions.length,
-                      timeLimit: quiz.timeLimit,
-                      onTap: () => Get.toNamed(
-                        '/quiz/${quiz.id}',
-                        parameters: {'id': quiz.id},
-                      ),
-                    );
-                  },
-                  childCount: _quizzes.length,
-                ),
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  final quiz = _quizzes[index];
+                  return QuizCard(
+                    title: quiz.title,
+                    description: quiz.description,
+                    questionCount: quiz.questions.length,
+                    timeLimit: quiz.timeLimit,
+                    onTap: () => Get.toNamed(
+                      '/quiz/${quiz.id}',
+                      parameters: {'id': quiz.id},
+                    ),
+                  );
+                }, childCount: _quizzes.length),
               ),
             ),
         ],

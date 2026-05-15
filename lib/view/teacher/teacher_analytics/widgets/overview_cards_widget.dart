@@ -1,44 +1,60 @@
-import 'package:codelearn/services/dummy_data_service.dart';
+import 'package:codelearn/models/course.dart';
+import 'package:codelearn/repositories/course_repository.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_color.dart';
 
 class OverviewCardsWidget extends StatelessWidget {
   final String instructorID;
-  const OverviewCardsWidget({super.key, required this.instructorID});
+  OverviewCardsWidget({super.key, required this.instructorID});
+
+  final CourseRepository _courseRepository = CourseRepository();
 
   @override
   Widget build(BuildContext context) {
-    final stats = DummyDataService.getTeacherStats(instructorID);
+    return FutureBuilder<List<Course>>(
+      future: _courseRepository.getInstructorCourses(instructorID),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-    return GridView.count(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: 2,
-      crossAxisSpacing: 16,
-      mainAxisSpacing: 16,
-      childAspectRatio: 1.2,
-      children: [
-        _buildStatCard(
-          'Total Students',
-          '${stats.totalStudents}',
-          Icons.people,
-        ),
-        _buildStatCard(
-          'Active Courses',
-          '${stats.activeCourses}',
-          Icons.school,
-        ),
-        _buildStatCard(
-          'Total Revenue',
-          '\$${stats.totalRevenue.toStringAsFixed(2)}',
-          Icons.attach_money,
-        ),
-        _buildStatCard(
-          'Avg. Rating',
-          stats.averageRating.toString(),
-          Icons.star,
-        ),
-      ],
+        final courses = snapshot.data ?? [];
+        final totalStudents = courses.fold<int>(
+          0,
+          (sum, course) => sum + course.enrollmentCount,
+        );
+        final totalRevenue = courses.fold<double>(
+          0,
+          (sum, course) => sum + (course.price * course.enrollmentCount),
+        );
+        final averageRating = courses.isEmpty
+            ? 0.0
+            : courses.fold<double>(0, (sum, course) => sum + course.rating) /
+                  courses.length;
+
+        return GridView.count(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          crossAxisCount: 2,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+          childAspectRatio: 1.2,
+          children: [
+            _buildStatCard('Total Students', '$totalStudents', Icons.people),
+            _buildStatCard('Active Courses', '${courses.length}', Icons.school),
+            _buildStatCard(
+              'Total Revenue',
+              '\$${totalRevenue.toStringAsFixed(2)}',
+              Icons.attach_money,
+            ),
+            _buildStatCard(
+              'Avg. Rating',
+              averageRating.toStringAsFixed(1),
+              Icons.star,
+            ),
+          ],
+        );
+      },
     );
   }
 

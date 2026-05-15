@@ -441,5 +441,14 @@
   "beFirstToMessage": "Бірінші болып жазыңыз!",
   "today": "Бүгін",
   "yesterday": "Кеше",
-  "Areyousure":"Жүйеден шыққыңыз келетініне сенімдісіз бе?"
+  "Areyousure":"Жүйеден шыққыңыз келетініне сенімдісіз бе?",
+  "youCanNowAccessTheCourseContent": "Енді сіз курстың мазмұнына кіре аласыз",
+  "failedToLoadReviews":"Пікірлерді жүктеу сәтсіз аяқталды. Кейінірек қайталап көріңіз.",
+  "pleaseSignInToReview":"Тексеру үшін жүйеге кіріңіз",
+  "failedToSubmitReview":"Пікір жіберілмеді. Кейінірек қайталап көріңіз.",
+  "reviewSubmitted":"Пікіріңізді үшін Рахмет!",
+  "reviewUpdated":"Сіздің пікіріңіз жаңартылды!",
+  "reviewDeleted":"Сіздің пікіріңіз жойылды!",
+  "actionCompleted":"Әрекеті сәтті аяқталды!",
+  "noReviewsYet":"Әзірге шолулар жоқ."
 }

@@ -3,7 +3,7 @@ import 'package:codelearn/bloc/course/course_state.dart';
 import 'package:codelearn/models/course.dart';
 import 'package:codelearn/routes/app_routes.dart';
 import 'package:codelearn/view/certificate/certificate_preview_screen.dart';
-import 'package:codelearn/view/chat/chat_screen.dart';
+import 'package:codelearn/view/chat/group_chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -51,10 +51,9 @@ class ActionButtons extends StatelessWidget {
               const SizedBox(width: 16),
               IconButton(
                 onPressed: () => Get.to(
-                      () => ChatScreen(
+                  () => GroupChatScreen(
                     courseId: course.id,
-                    instructorID: course.instructorID,
-                    isTeacherView: false,
+                    courseTitle: course.title,
                   ),
                 ),
                 icon: const Icon(Icons.chat),
@@ -91,10 +90,9 @@ class ActionButtons extends StatelessWidget {
               const SizedBox(width: 16),
               IconButton(
                 onPressed: () => Get.to(
-                      () => ChatScreen(
+                  () => GroupChatScreen(
                     courseId: course.id,
-                    instructorID: course.instructorID,
-                    isTeacherView: false,
+                    courseTitle: course.title,
                   ),
                 ),
                 icon: const Icon(Icons.chat),

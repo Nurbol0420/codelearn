@@ -399,6 +399,15 @@
   "beFirstToMessage": "Be the first to say something!",
   "today": "Today",
   "yesterday": "Yesterday",
-  "areyousure":"Are you sure you want to logout?"
+  "areyousure":"Are you sure you want to logout?",
+  "youCanNowAccessTheCourseContent": "You can now access the course content",
+  "failedToLoadReviews":"Failed to load reviews. Please try again later.",
+  "pleaseSignInToReview":"Please sign in to review",
+  "failedToSubmitReview":"Failed to submit review. Please try again later.",
+  "reviewSubmitted":"Thank you for your review!",
+  "reviewUpdated":"Your review has been updated!",
+  "reviewDeleted":"Your review has been deleted!",
+  "actionCompleted":"Action completed successfully!",
+  "noReviewsYet":"No reviews yet."
 }
 

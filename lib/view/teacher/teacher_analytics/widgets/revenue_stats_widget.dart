@@ -1,10 +1,15 @@
+import 'package:codelearn/models/course.dart';
+import 'package:codelearn/repositories/course_repository.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_color.dart';
 
 class RevenueStatsWidget extends StatelessWidget {
-  const RevenueStatsWidget({super.key});
+  final String instructorID;
+  RevenueStatsWidget({super.key, required this.instructorID});
+
+  final CourseRepository _courseRepository = CourseRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -39,199 +44,167 @@ class RevenueStatsWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildRevenueMetric('Monthly Revenue', '\$2,345'),
-              _buildRevenueMetric('Annual Revenue', '\$28,345'),
-            ],
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            'Revenue by Course',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 12),
-          SizedBox(
-            height: 200,
-            child: BarChart(
-              BarChartData(
-                alignment: BarChartAlignment.spaceAround,
-                maxY: 5000,
-                gridData: FlGridData(
-                  show: true,
-                  drawVerticalLine: false,
-                  getDrawingHorizontalLine: (value) => FlLine(
-                    color: Colors.grey.withValues(alpha: 0.25),
-                    strokeWidth: 1,
-                    dashArray: const [6, 4],
-                  ),
-                ),
-                borderData: FlBorderData(
-                  show: true,
-                  border: Border.all(
-                    color: Colors.grey.withValues(alpha: 0.2),
-                    width: 1,
-                  ),
-                ),
-                titlesData: FlTitlesData(
-                  show: true,
-                  bottomTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      reservedSize: 32,
-                      getTitlesWidget: (value, meta) {
-                        const titles = [
-                          'Course 1',
-                          'Course 2',
-                          'Course 3',
-                          'Course 4',
-                        ];
-                        final idx = value.toInt();
-                        if (idx >= 0 && idx < titles.length) {
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 6),
-                            child: Text(
-                              titles[idx],
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Colors.black87,
-                              ),
-                            ),
-                          );
-                        }
-                        return const SizedBox.shrink();
-                      },
-                    ),
-                  ),
-                  leftTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      reservedSize: 44,
-                      getTitlesWidget: (value, meta) => Text(
-                        value.toInt().toString(),
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.black87,
-                        ),
+          FutureBuilder<List<Course>>(
+            future: _courseRepository.getInstructorCourses(instructorID),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              final courses = snapshot.data ?? [];
+              final totalRevenue = courses.fold<double>(
+                0,
+                (sum, course) => sum + (course.price * course.enrollmentCount),
+              );
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _buildRevenueMetric(
+                        'Total Revenue',
+                        '\$${totalRevenue.toStringAsFixed(0)}',
                       ),
-                    ),
-                  ),
-                  rightTitles: const AxisTitles(
-                    sideTitles: SideTitles(showTitles: false),
-                  ),
-                  topTitles: const AxisTitles(
-                    sideTitles: SideTitles(showTitles: false),
-                  ),
-                ),
-                barGroups: [
-                  BarChartGroupData(
-                    x: 0,
-                    barRods: [
-                      BarChartRodData(
-                        toY: 3000,
-                        borderRadius: BorderRadius.circular(8),
-                        gradient: LinearGradient(
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
-                          colors: [
-                            AppColors.primary.withValues(alpha: 0.95),
-                            AppColors.primary.withValues(alpha: 0.65),
-                          ],
-                        ),
-                        width: 20,
-                        rodStackItems: const [],
-                      ),
+                      _buildRevenueMetric('Courses', courses.length.toString()),
                     ],
                   ),
-                  BarChartGroupData(
-                    x: 1,
-                    barRods: [
-                      BarChartRodData(
-                        toY: 2000,
-                        borderRadius: BorderRadius.circular(8),
-                        gradient: LinearGradient(
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
-                          colors: [
-                            AppColors.primary.withValues(alpha: 0.95),
-                            AppColors.primary.withValues(alpha: 0.65),
-                          ],
-                        ),
-                        width: 20,
-                      ),
-                    ],
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Revenue by Course',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                  BarChartGroupData(
-                    x: 2,
-                    barRods: [
-                      BarChartRodData(
-                        toY: 4000,
-                        borderRadius: BorderRadius.circular(8),
-                        gradient: LinearGradient(
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
-                          colors: [
-                            AppColors.primary.withValues(alpha: 0.95),
-                            AppColors.primary.withValues(alpha: 0.65),
-                          ],
-                        ),
-                        width: 20,
-                      ),
-                    ],
-                  ),
-                  BarChartGroupData(
-                    x: 3,
-                    barRods: [
-                      BarChartRodData(
-                        toY: 1500,
-                        borderRadius: BorderRadius.circular(8),
-                        gradient: LinearGradient(
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
-                          colors: [
-                            AppColors.primary.withValues(alpha: 0.95),
-                            AppColors.primary.withValues(alpha: 0.65),
-                          ],
-                        ),
-                        width: 20,
-                      ),
-                    ],
-                  ),
+                  const SizedBox(height: 12),
+                  if (courses.isEmpty)
+                    const SizedBox(
+                      height: 120,
+                      child: Center(child: Text('No revenue data yet')),
+                    )
+                  else
+                    SizedBox(height: 200, child: _buildRevenueChart(courses)),
                 ],
-                barTouchData: BarTouchData(
-                  enabled: true,
-                  touchTooltipData: BarTouchTooltipData(
-                    tooltipRoundedRadius: 8,
-                    tooltipPadding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 8,
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRevenueChart(List<Course> courses) {
+    final chartCourses = courses.take(4).toList();
+    final revenues = chartCourses
+        .map((course) => course.price * course.enrollmentCount)
+        .toList();
+    final maxRevenue = revenues.reduce((a, b) => a > b ? a : b);
+
+    return BarChart(
+      BarChartData(
+        alignment: BarChartAlignment.spaceAround,
+        maxY: (maxRevenue * 1.2).clamp(1, double.infinity).toDouble(),
+        gridData: FlGridData(
+          show: true,
+          drawVerticalLine: false,
+          getDrawingHorizontalLine: (value) => FlLine(
+            color: Colors.grey.withValues(alpha: 0.25),
+            strokeWidth: 1,
+            dashArray: const [6, 4],
+          ),
+        ),
+        borderData: FlBorderData(
+          show: true,
+          border: Border.all(
+            color: Colors.grey.withValues(alpha: 0.2),
+            width: 1,
+          ),
+        ),
+        titlesData: FlTitlesData(
+          show: true,
+          bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              reservedSize: 32,
+              getTitlesWidget: (value, meta) {
+                final idx = value.toInt();
+                if (idx >= 0 && idx < chartCourses.length) {
+                  final title = chartCourses[idx].title;
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 6),
+                    child: Text(
+                      title.length > 8 ? '${title.substring(0, 8)}...' : title,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.black87,
+                      ),
                     ),
-                    tooltipBgColor: Colors.black.withValues(alpha: 0.75),
-                    getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                      final value = rod.toY.toInt();
-                      final course = [
-                        'Course 1',
-                        'Course 2',
-                        'Course 3',
-                        'Course 4',
-                      ][group.x.toInt()];
-                      return BarTooltipItem(
-                        '$course\n$value USD',
-                        const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                backgroundColor: Colors.transparent,
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+            ),
+          ),
+          leftTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              reservedSize: 44,
+              getTitlesWidget: (value, meta) => Text(
+                value.toInt().toString(),
+                style: const TextStyle(fontSize: 12, color: Colors.black87),
               ),
             ),
           ),
-        ],
+          rightTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          topTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+        ),
+        barGroups: List.generate(chartCourses.length, (index) {
+          return BarChartGroupData(
+            x: index,
+            barRods: [
+              BarChartRodData(
+                toY: revenues[index],
+                borderRadius: BorderRadius.circular(8),
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    AppColors.primary.withValues(alpha: 0.95),
+                    AppColors.primary.withValues(alpha: 0.65),
+                  ],
+                ),
+                width: 20,
+              ),
+            ],
+          );
+        }),
+        barTouchData: BarTouchData(
+          enabled: true,
+          touchTooltipData: BarTouchTooltipData(
+            tooltipRoundedRadius: 8,
+            tooltipPadding: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 8,
+            ),
+            tooltipBgColor: Colors.black.withValues(alpha: 0.75),
+            getTooltipItem: (group, groupIndex, rod, rodIndex) {
+              final value = rod.toY.toInt();
+              final course = chartCourses[group.x.toInt()].title;
+              return BarTooltipItem(
+                '$course\n$value USD',
+                const TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              );
+            },
+          ),
+        ),
+        backgroundColor: Colors.transparent,
       ),
     );
   }

@@ -1176,4 +1176,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get areyousure => 'Are you sure you want to logout?';
+
+  @override
+  String get youCanNowAccessTheCourseContent =>
+      'You can now access the course content';
+
+  @override
+  String get failedToLoadReviews =>
+      'Failed to load reviews. Please try again later.';
+
+  @override
+  String get pleaseSignInToReview => 'Please sign in to review';
+
+  @override
+  String get failedToSubmitReview =>
+      'Failed to submit review. Please try again later.';
+
+  @override
+  String get reviewSubmitted => 'Thank you for your review!';
+
+  @override
+  String get reviewUpdated => 'Your review has been updated!';
+
+  @override
+  String get reviewDeleted => 'Your review has been deleted!';
+
+  @override
+  String get actionCompleted => 'Action completed successfully!';
+
+  @override
+  String get noReviewsYet => 'No reviews yet.';
 }

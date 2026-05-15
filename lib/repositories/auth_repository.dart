@@ -12,12 +12,9 @@ class AuthRepository {
     FirebaseAuth? firebaseAuth,
     FirebaseFirestore? firestore,
     GoogleSignIn? googleSignIn,
-  })  : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
-        _firestore = firestore ?? FirebaseFirestore.instance,
-        _googleSignIn = googleSignIn ??
-              GoogleSignIn(
-              scopes: ['email'],
-            );
+  }) : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
+       _firestore = firestore ?? FirebaseFirestore.instance,
+       _googleSignIn = googleSignIn ?? GoogleSignIn(scopes: ['email']);
 
   Stream<UserModel?> get authStateChanges {
     return _firebaseAuth.authStateChanges().asyncMap((user) async {
@@ -32,7 +29,9 @@ class AuthRepository {
         }, SetOptions(merge: true));
 
         final updatedDoc = await ref.get();
-        return UserModel.fromFirestore(updatedDoc);
+        final userModel = UserModel.fromFirestore(updatedDoc);
+        await _syncRoleCollection(userModel);
+        return userModel;
       }
 
       return _ensureUserDocument(user);
@@ -46,8 +45,7 @@ class AuthRepository {
     required UserRole role,
   }) async {
     try {
-      final userCredential =
-          await _firebaseAuth.createUserWithEmailAndPassword(
+      final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email.trim(),
         password: password.trim(),
       );
@@ -67,6 +65,7 @@ class AuthRepository {
           .collection('users')
           .doc(user.uid)
           .set(user.toFirestore());
+      await _syncRoleCollection(user);
 
       return user;
     } on FirebaseAuthException catch (e) {
@@ -79,8 +78,7 @@ class AuthRepository {
     required String password,
   }) async {
     try {
-      final userCredential =
-          await _firebaseAuth.signInWithEmailAndPassword(
+      final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
         email: email.trim(),
         password: password.trim(),
       );
@@ -94,13 +92,13 @@ class AuthRepository {
         return _ensureUserDocument(userCredential.user!);
       }
 
-      await ref.set({
-        'lastLoginAt': Timestamp.now(),
-      }, SetOptions(merge: true));
+      await ref.set({'lastLoginAt': Timestamp.now()}, SetOptions(merge: true));
 
       final updatedDoc = await ref.get();
 
-      return UserModel.fromFirestore(updatedDoc);
+      final user = UserModel.fromFirestore(updatedDoc);
+      await _syncRoleCollection(user);
+      return user;
     } on FirebaseAuthException catch (e) {
       throw _handleAuthException(e);
     }
@@ -121,8 +119,9 @@ class AuthRepository {
         idToken: auth.idToken,
       );
 
-      final userCredential =
-          await _firebaseAuth.signInWithCredential(credential);
+      final userCredential = await _firebaseAuth.signInWithCredential(
+        credential,
+      );
 
       final fbUser = userCredential.user!;
 
@@ -178,10 +177,10 @@ class AuthRepository {
       updates['updatedAt'] = Timestamp.now();
 
       if (updates.isNotEmpty) {
-        await _firestore.collection('users').doc(user.uid).set(
-              updates,
-              SetOptions(merge: true),
-            );
+        await _firestore
+            .collection('users')
+            .doc(user.uid)
+            .set(updates, SetOptions(merge: true));
       }
     } on FirebaseAuthException catch (e) {
       throw _handleAuthException(e);
@@ -190,9 +189,7 @@ class AuthRepository {
 
   Future<void> resetPassword(String email) async {
     try {
-      await _firebaseAuth.sendPasswordResetEmail(
-        email: email.trim(),
-      );
+      await _firebaseAuth.sendPasswordResetEmail(email: email.trim());
     } on FirebaseAuthException catch (e) {
       throw _handleAuthException(e);
     }
@@ -204,22 +201,21 @@ class AuthRepository {
     final snap = await ref.get();
 
     if (snap.exists) {
-      await ref.set({
-        'lastLoginAt': Timestamp.now(),
-      }, SetOptions(merge: true));
+      await ref.set({'lastLoginAt': Timestamp.now()}, SetOptions(merge: true));
 
       final updatedDoc = await ref.get();
 
-      return UserModel.fromFirestore(updatedDoc);
+      final user = UserModel.fromFirestore(updatedDoc);
+      await _syncRoleCollection(user);
+      return user;
     }
 
     final user = UserModel(
       uid: fbUser.uid,
       email: fbUser.email ?? '',
-      fullName: fbUser.displayName ??
-          (fbUser.email != null
-              ? fbUser.email!.split('@').first
-              : 'User'),
+      fullName:
+          fbUser.displayName ??
+          (fbUser.email != null ? fbUser.email!.split('@').first : 'User'),
       createdAt: DateTime.now(),
       lastloginAt: DateTime.now(),
       role: UserRole.student,
@@ -227,8 +223,17 @@ class AuthRepository {
     );
 
     await ref.set(user.toFirestore());
+    await _syncRoleCollection(user);
 
     return user;
+  }
+
+  Future<void> _syncRoleCollection(UserModel user) async {
+    final collection = user.role == UserRole.teacher ? 'teachers' : 'students';
+    await _firestore
+        .collection(collection)
+        .doc(user.uid)
+        .set(user.toFirestore(), SetOptions(merge: true));
   }
 
   String _handleAuthException(FirebaseAuthException e) {

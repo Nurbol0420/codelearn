@@ -1181,4 +1181,34 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get areyousure => 'Are you sure you want to logout?';
+
+  @override
+  String get youCanNowAccessTheCourseContent =>
+      'Енді сіз курстың мазмұнына кіре аласыз';
+
+  @override
+  String get failedToLoadReviews =>
+      'Пікірлерді жүктеу сәтсіз аяқталды. Кейінірек қайталап көріңіз.';
+
+  @override
+  String get pleaseSignInToReview => 'Тексеру үшін жүйеге кіріңіз';
+
+  @override
+  String get failedToSubmitReview =>
+      'Пікір жіберілмеді. Кейінірек қайталап көріңіз.';
+
+  @override
+  String get reviewSubmitted => 'Пікіріңізді үшін Рахмет!';
+
+  @override
+  String get reviewUpdated => 'Сіздің пікіріңіз жаңартылды!';
+
+  @override
+  String get reviewDeleted => 'Сіздің пікіріңіз жойылды!';
+
+  @override
+  String get actionCompleted => 'Әрекеті сәтті аяқталды!';
+
+  @override
+  String get noReviewsYet => 'Әзірге шолулар жоқ.';
 }

@@ -2347,6 +2347,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Are you sure you want to logout?'**
   String get areyousure;
+
+  /// No description provided for @youCanNowAccessTheCourseContent.
+  ///
+  /// In en, this message translates to:
+  /// **'You can now access the course content'**
+  String get youCanNowAccessTheCourseContent;
+
+  /// No description provided for @failedToLoadReviews.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load reviews. Please try again later.'**
+  String get failedToLoadReviews;
+
+  /// No description provided for @pleaseSignInToReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Please sign in to review'**
+  String get pleaseSignInToReview;
+
+  /// No description provided for @failedToSubmitReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to submit review. Please try again later.'**
+  String get failedToSubmitReview;
+
+  /// No description provided for @reviewSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for your review!'**
+  String get reviewSubmitted;
+
+  /// No description provided for @reviewUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Your review has been updated!'**
+  String get reviewUpdated;
+
+  /// No description provided for @reviewDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Your review has been deleted!'**
+  String get reviewDeleted;
+
+  /// No description provided for @actionCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Action completed successfully!'**
+  String get actionCompleted;
+
+  /// No description provided for @noReviewsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No reviews yet.'**
+  String get noReviewsYet;
 }
 
 class _AppLocalizationsDelegate
