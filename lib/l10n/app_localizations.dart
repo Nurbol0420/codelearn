@@ -467,7 +467,7 @@ abstract class AppLocalizations {
   /// No description provided for @seeAll.
   ///
   /// In en, this message translates to:
-  /// **'See All'**
+  /// **'See all'**
   String get seeAll;
 
   /// No description provided for @coursesCount.
@@ -617,7 +617,7 @@ abstract class AppLocalizations {
   /// No description provided for @buyNow.
   ///
   /// In en, this message translates to:
-  /// **'Buy now for'**
+  /// **'Buy Now'**
   String get buyNow;
 
   /// No description provided for @premiumCourse.
@@ -1301,7 +1301,7 @@ abstract class AppLocalizations {
   /// No description provided for @minutes.
   ///
   /// In en, this message translates to:
-  /// **'minutes'**
+  /// **'min'**
   String get minutes;
 
   /// No description provided for @errorLoadingVideo.
@@ -1325,7 +1325,7 @@ abstract class AppLocalizations {
   /// No description provided for @resetPasswordAnswer.
   ///
   /// In en, this message translates to:
-  /// **'Go to the login screen and tap \"Forgot Password\". Follow the instructions sent to your email.'**
+  /// **'Go to the login screen and tap \\\"Forgot Password\\\". Follow the instructions sent to your email.'**
   String get resetPasswordAnswer;
 
   /// No description provided for @changeEmailFaq.
@@ -1349,7 +1349,7 @@ abstract class AppLocalizations {
   /// No description provided for @updateAppAnswer.
   ///
   /// In en, this message translates to:
-  /// **'Visit the App Store/Google Play, search for our app, and tap \"Update\". Keeping the app up to date ensures the best experience.'**
+  /// **'Visit the App Store/Google Play, search for our app, and tap \\\"Update\\\". Keeping the app up to date ensures the best experience.'**
   String get updateAppAnswer;
 
   /// No description provided for @verificationEmailFaq.
@@ -1361,7 +1361,7 @@ abstract class AppLocalizations {
   /// No description provided for @verificationEmailAnswer.
   ///
   /// In en, this message translates to:
-  /// **'Please check your Spam/Junk folder and ensure you entered the correct email. If needed, tap \"Resend\" on the verification screen.'**
+  /// **'Please check your Spam/Junk folder and ensure you entered the correct email. If needed, tap \\\"Resend\\\" on the verification screen.'**
   String get verificationEmailAnswer;
 
   /// No description provided for @cancelSubscriptionFaq.
@@ -1601,7 +1601,7 @@ abstract class AppLocalizations {
   /// No description provided for @faqA1.
   ///
   /// In en, this message translates to:
-  /// **'Go to the login screen and tap \"Forgot Password\". Follow the instructions sent to your email.'**
+  /// **'Go to the login screen and tap \\\"Forgot Password\\\". Follow the instructions sent to your email.'**
   String get faqA1;
 
   /// No description provided for @faqQ2.
@@ -1625,7 +1625,7 @@ abstract class AppLocalizations {
   /// No description provided for @faqA3.
   ///
   /// In en, this message translates to:
-  /// **'Visit the App Store/Google Play, search for our app, and tap \"Update\". Keeping the app up to date ensures the best experience.'**
+  /// **'Visit the App Store/Google Play, search for our app, and tap \\\"Update\\\". Keeping the app up to date ensures the best experience.'**
   String get faqA3;
 
   /// No description provided for @faqQ4.
@@ -1637,7 +1637,7 @@ abstract class AppLocalizations {
   /// No description provided for @faqA4.
   ///
   /// In en, this message translates to:
-  /// **'Please check your Spam/Junk folder and ensure you entered the correct email. If needed, tap \"Resend\" on the verification screen.'**
+  /// **'Please check your Spam/Junk folder and ensure you entered the correct email. If needed, tap \\\"Resend\\\" on the verification screen.'**
   String get faqA4;
 
   /// No description provided for @faqQ5.
@@ -2147,7 +2147,7 @@ abstract class AppLocalizations {
   /// No description provided for @formatHintBody.
   ///
   /// In en, this message translates to:
-  /// **'1. Question text?\nA) variant a\nB) variant B\nV) variant B\nG) variant d\n\n denote the correct answer in format A.'**
+  /// **'1. Question text?\\nA) variant a\\nB) variant B\\nV) variant B\\nG) variant d\\n\\n denote the correct answer in format A.'**
   String get formatHintBody;
 
   /// No description provided for @parsingFile.
@@ -2401,6 +2401,336 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No reviews yet.'**
   String get noReviewsYet;
+
+  /// No description provided for @freeEnroll.
+  ///
+  /// In en, this message translates to:
+  /// **'Enroll for Free'**
+  String get freeEnroll;
+
+  /// No description provided for @enrollSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Successfully enrolled in the course!'**
+  String get enrollSuccess;
+
+  /// No description provided for @enrollError.
+  ///
+  /// In en, this message translates to:
+  /// **'Enrollment error'**
+  String get enrollError;
+
+  /// No description provided for @lessonLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson Locked'**
+  String get lessonLocked;
+
+  /// No description provided for @completePrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Please complete the previous lesson first'**
+  String get completePrevious;
+
+  /// No description provided for @purchaseRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase required'**
+  String get purchaseRequired;
+
+  /// No description provided for @purchaseToContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Please purchase this course to access all lessons'**
+  String get purchaseToContinue;
+
+  /// No description provided for @addSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Section'**
+  String get addSection;
+
+  /// No description provided for @sectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Section title'**
+  String get sectionTitle;
+
+  /// No description provided for @deleteSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Section?'**
+  String get deleteSection;
+
+  /// No description provided for @deleteSectionConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'All lessons in this section will also be deleted.'**
+  String get deleteSectionConfirm;
+
+  /// No description provided for @addLessonToSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Add lesson'**
+  String get addLessonToSection;
+
+  /// No description provided for @noSectionsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No sections yet'**
+  String get noSectionsYet;
+
+  /// No description provided for @addSectionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Click \'Add Section\' to start'**
+  String get addSectionHint;
+
+  /// No description provided for @curriculum.
+  ///
+  /// In en, this message translates to:
+  /// **'Curriculum'**
+  String get curriculum;
+
+  /// No description provided for @sectionsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'sections'**
+  String get sectionsCount;
+
+  /// No description provided for @lessonsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'lessons'**
+  String get lessonsCount;
+
+  /// No description provided for @videoUploaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Video uploaded'**
+  String get videoUploaded;
+
+  /// No description provided for @freeLesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get freeLesson;
+
+  /// No description provided for @updateCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Categories'**
+  String get updateCategories;
+
+  /// No description provided for @updateCategoriesConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Old categories will be replaced with programming languages.'**
+  String get updateCategoriesConfirm;
+
+  /// No description provided for @myLearning.
+  ///
+  /// In en, this message translates to:
+  /// **'My Learning'**
+  String get myLearning;
+
+  /// No description provided for @allTab.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get allTab;
+
+  /// No description provided for @inProgressTab.
+  ///
+  /// In en, this message translates to:
+  /// **'In Progress'**
+  String get inProgressTab;
+
+  /// No description provided for @completedTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completedTab;
+
+  /// No description provided for @continueBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueBtn;
+
+  /// No description provided for @startBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get startBtn;
+
+  /// No description provided for @watchAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch Again'**
+  String get watchAgain;
+
+  /// No description provided for @percentCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'% completed'**
+  String get percentCompleted;
+
+  /// No description provided for @findCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Courses'**
+  String get findCourses;
+
+  /// No description provided for @noCoursesMy.
+  ///
+  /// In en, this message translates to:
+  /// **'No courses yet'**
+  String get noCoursesMy;
+
+  /// No description provided for @enrollToCourse.
+  ///
+  /// In en, this message translates to:
+  /// **'Enroll in a course and start learning'**
+  String get enrollToCourse;
+
+  /// No description provided for @certificatePreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Certificate Preview'**
+  String get certificatePreview;
+
+  /// No description provided for @chooseFromGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from Gallery'**
+  String get chooseFromGallery;
+
+  /// No description provided for @takePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a Photo'**
+  String get takePhoto;
+
+  /// No description provided for @noRecommendedCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'No recommended courses available.'**
+  String get noRecommendedCourses;
+
+  /// No description provided for @pleaseSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Please sign in to view analytics'**
+  String get pleaseSignIn;
+
+  /// No description provided for @noCourseDataYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No course data yet'**
+  String get noCourseDataYet;
+
+  /// No description provided for @noRevenueDataYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No revenue data yet'**
+  String get noRevenueDataYet;
+
+  /// No description provided for @updateCategoriesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Categories?'**
+  String get updateCategoriesTitle;
+
+  /// No description provided for @updateCategoriesBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Old categories will be replaced with programming languages: Python, JavaScript, Flutter, Dart, Java, C++, Kotlin, Swift'**
+  String get updateCategoriesBody;
+
+  /// No description provided for @update.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get update;
+
+  /// No description provided for @deleteSectionBody.
+  ///
+  /// In en, this message translates to:
+  /// **'All lessons in this section will also be deleted.'**
+  String get deleteSectionBody;
+
+  /// No description provided for @deleteCourse.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Course'**
+  String get deleteCourse;
+
+  /// No description provided for @deleteCourseConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this course?'**
+  String get deleteCourseConfirm;
+
+  /// No description provided for @enrolledSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'You have successfully enrolled in the course!'**
+  String get enrolledSuccess;
+
+  /// No description provided for @enrolledError.
+  ///
+  /// In en, this message translates to:
+  /// **'Enrollment error: '**
+  String get enrolledError;
+
+  /// No description provided for @noLessonsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No lessons yet to start.'**
+  String get noLessonsYet;
+
+  /// No description provided for @freeEnrollBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Enroll for Free'**
+  String get freeEnrollBtn;
+
+  /// No description provided for @materials.
+  ///
+  /// In en, this message translates to:
+  /// **'Materials'**
+  String get materials;
+
+  /// No description provided for @noLessonsInSection.
+  ///
+  /// In en, this message translates to:
+  /// **'No lessons in this section'**
+  String get noLessonsInSection;
+
+  /// No description provided for @preview.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get preview;
+
+  /// No description provided for @videoUploadedBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Video uploaded'**
+  String get videoUploadedBadge;
+
+  /// No description provided for @freeBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get freeBadge;
+
+  /// No description provided for @lessonsUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'lessons'**
+  String get lessonsUnit;
 }
 
 class _AppLocalizationsDelegate

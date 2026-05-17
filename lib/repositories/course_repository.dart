@@ -312,6 +312,7 @@ class CourseRepository {
           'enrolledAt': FieldValue.serverTimestamp(),
           'createdAt': FieldValue.serverTimestamp(),
           'isPremium': isPremium,
+          'isPaid': isPremium, // true = оплачено, false = бесплатный курс
           'progress': 0,
         });
         final course = await getCourseDetail(courseId);

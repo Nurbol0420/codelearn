@@ -1,7 +1,11 @@
+import 'package:codelearn/bloc/auth/auth_bloc.dart';
+import 'package:codelearn/bloc/auth/auth_bloc.dart';
 import 'package:codelearn/bloc/course/course_bloc.dart';
 import 'package:codelearn/bloc/course/course_event.dart';
 import 'package:codelearn/bloc/course/course_state.dart';
+import 'package:codelearn/repositories/course_repository.dart';
 import 'package:codelearn/routes/app_routes.dart';
+import 'package:codelearn/services/dummy_data_service.dart';
 import 'package:codelearn/view/course/course_detail/widgets/action_buttons.dart';
 import 'package:codelearn/view/course/course_detail/widgets/course_detail_app_bar.dart';
 import 'package:codelearn/view/course/course_detail/widgets/course_info_card.dart';
@@ -23,12 +27,67 @@ class CourseDetailScreen extends StatefulWidget {
 
 class _CourseDetailScreenState extends State<CourseDetailScreen> with RouteAware {
   bool _isUnlocked = false;
+  bool _isEnrolling = false;
+  final _repo = CourseRepository();
   final RouteObserver<PageRoute> _routeObserver = Get.find<RouteObserver<PageRoute>>();
 
   @override
-  void initState() { super.initState(); _loadCourseDetail(); }
+  void initState() {
+    super.initState();
+    _checkUnlockStatus();
+    _loadCourseDetail();
+  }
 
-  void _loadCourseDetail() { context.read<CourseBloc>().add(LoadCourseDetail(widget.courseId)); }
+  void _loadCourseDetail() {
+    context.read<CourseBloc>().add(LoadCourseDetail(widget.courseId));
+  }
+
+  Future<void> _checkUnlockStatus() async {
+    // 1. Check local cache first (fast)
+    if (DummyDataService.isCourseUnlocked(widget.courseId)) {
+      if (mounted) setState(() => _isUnlocked = true);
+      return;
+    }
+    // 2. Check Firestore enrollment (for real Firestore course IDs)
+    try {
+      final userId = context.read<AuthBloc>().state.userModel?.uid;
+      if (userId != null) {
+        final enrolled = await _repo.isEnrolled(widget.courseId, userId);
+        if (enrolled) {
+          DummyDataService.addPurchasedCourse(widget.courseId); // cache it
+          if (mounted) setState(() => _isUnlocked = true);
+        }
+      }
+    } catch (_) {}
+  }
+
+  Future<void> _enrollFreeCourse() async {
+    setState(() => _isEnrolling = true);
+    try {
+      final userId = context.read<AuthBloc>().state.userModel?.uid;
+      if (userId != null) {
+        await _repo.enrollInCourse(widget.courseId, userId, isPremium: false);
+      }
+      DummyDataService.addPurchasedCourse(widget.courseId);
+      if (mounted) {
+        setState(() { _isUnlocked = true; _isEnrolling = false; });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(l10n.enrolledSuccess),
+            backgroundColor: Colors.green,
+          ),
+        );
+        _loadCourseDetail();
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isEnrolling = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Ошибка записи: $e')),
+        );
+      }
+    }
+  }
 
   @override
   void didChangeDependencies() {
@@ -40,7 +99,11 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> with RouteAware
   void dispose() { _routeObserver.unsubscribe(this); super.dispose(); }
 
   @override
-  void didPopNext() { _loadCourseDetail(); }
+  void didPopNext() {
+    // Called when returning from payment screen
+    _checkUnlockStatus();
+    _loadCourseDetail();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -170,7 +233,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> with RouteAware
                       Padding(padding: const EdgeInsets.symmetric(horizontal: 20), child: ReviewsSection(courseId: widget.courseId)),
                       const SizedBox(height: 20),
                       Padding(padding: const EdgeInsets.symmetric(horizontal: 20), child: ActionButtons(course: course, isUnlocked: _isUnlocked)),
-                      SizedBox(height: course.isPremium && !_isUnlocked ? 100 : 24),
+                      SizedBox(height: (!_isUnlocked) ? 100 : 24),
                     ],
                   ),
                 ),
@@ -205,7 +268,38 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> with RouteAware
                       ),
                     ),
                   )
-                : null,
+                    : !_isUnlocked
+                    ? Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(color: theme.scaffoldBackgroundColor, boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 20, offset: const Offset(0, -4))]),
+                        child: SafeArea(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(colors: [Colors.green, Color(0xFF2E7D32)]),
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: [BoxShadow(color: Colors.green.withValues(alpha: 0.4), blurRadius: 12, offset: const Offset(0, 4))],
+                            ),
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: _isEnrolling ? null : _enrollFreeCourse,
+                                borderRadius: BorderRadius.circular(16),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 16),
+                                  child: _isEnrolling
+                                      ? const Center(child: SizedBox(height: 24, width: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)))
+                                      : Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                                          const Icon(Icons.school_outlined, color: Colors.white),
+                                          const SizedBox(width: 12),
+                                          Text(l10n.freeEnrollBtn, style: theme.textTheme.titleMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
+                                        ]),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    : null,
           );
         }
 

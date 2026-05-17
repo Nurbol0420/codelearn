@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:get/get.dart';
+import 'package:codelearn/l10n/app_localizations.dart';
 
 class TeacherCourseCard extends StatelessWidget {
   final Course course;
@@ -17,12 +18,12 @@ class TeacherCourseCard extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Course'),
-        content: const Text('Are you sure you want to delete this course?'),
+        title: Text(AppLocalizations.of(context)!.deleteCourse),
+        content: Text(AppLocalizations.of(context)!.deleteCourseConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
+              child: Text(AppLocalizations.of(context)!.cancel),
           ),
           TextButton(
             onPressed: () {

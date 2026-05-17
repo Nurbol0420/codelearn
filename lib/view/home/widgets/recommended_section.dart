@@ -10,6 +10,7 @@ import 'package:codelearn/view/home/widgets/shimmer_recommended_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:codelearn/l10n/app_localizations.dart';
 
 class RecommendedSection extends StatefulWidget {
   const RecommendedSection({super.key});
@@ -62,7 +63,7 @@ class _RecommendedSectionState extends State<RecommendedSection> {
 
           if (courses.isEmpty) {
             return const Center(
-              child: Text('No recommended courses available.'),
+              child: Text(AppLocalizations.of(context)!.noRecommendedCourses),
             );
           }
 
@@ -78,7 +79,7 @@ class _RecommendedSectionState extends State<RecommendedSection> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  TextButton(onPressed: () {}, child: const Text('See all')),
+                  TextButton(onPressed: () {}, child: Text(AppLocalizations.of(context)!.seeAll)),
                 ],
               ),
               const SizedBox(height: 16),

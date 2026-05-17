@@ -1,5 +1,6 @@
 import 'package:codelearn/bloc/course/course_bloc.dart';
 import 'package:codelearn/bloc/course/course_state.dart';
+import 'package:codelearn/l10n/app_localizations.dart';
 import 'package:codelearn/models/course.dart';
 import 'package:codelearn/routes/app_routes.dart';
 import 'package:codelearn/view/certificate/certificate_preview_screen.dart';
@@ -19,9 +20,10 @@ class ActionButtons extends StatelessWidget {
   });
 
   void _goToFirstLesson(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     if (course.lessons.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Chưa có bài học để bắt đầu.')),
+        SnackBar(content: Text(l10n.noLessonsYet)),
       );
       return;
     }
@@ -44,7 +46,7 @@ class ActionButtons extends StatelessWidget {
                   onPressed: () {
                     Get.to(() => CertificatePreviewScreen(course: course));
                   },
-                  label: const Text('View Certificate'),
+                  label: Text(AppLocalizations.of(context)!.viewCertificate),
                   icon: const Icon(Icons.card_membership),
                 ),
               ),
@@ -81,7 +83,7 @@ class ActionButtons extends StatelessWidget {
                     _goToFirstLesson(context);
                   }
                 },
-                label: const Text('Start Learning'),
+                label: Text(AppLocalizations.of(context)!.startLearning),
                 icon: const Icon(Icons.play_circle),
               ),
             ),

@@ -1,5 +1,6 @@
 import 'package:codelearn/core/theme/app_color.dart';
 import 'package:flutter/material.dart';
+import 'package:codelearn/l10n/app_localizations.dart';
 import 'package:get/get.dart';
 
 class EditProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -9,7 +10,7 @@ class EditProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text('Edit Profile', style: TextStyle(color: Colors.white)),
+      title: Text(AppLocalizations.of(context)!.editProfile, style: const TextStyle(color: Colors.white)),
       backgroundColor: AppColors.primary,
       leading: IconButton(
         onPressed: () => Get.back(),

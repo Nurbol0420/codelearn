@@ -155,7 +155,7 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get enterEmailToResetPassword =>
-      'Құпия сөзді қалпына келтіру үшін электрондық поштаны енгізіңіз';
+      'Құпия Сөзді Қалпына Келтіру Үшін Электрондық Поштаны енгізіңіз';
 
   @override
   String get home => 'Басты бет';
@@ -269,7 +269,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get loadingCourse => 'Курс жүктелуде...';
 
   @override
-  String get buyNow => 'Қазір сатып алу';
+  String get buyNow => 'Сатып алу';
 
   @override
   String get premiumCourse => 'ПРЕМИУМ КУРС';
@@ -410,13 +410,13 @@ class AppLocalizationsKk extends AppLocalizations {
   String get liveChat => 'Тікелей чат';
 
   @override
-  String get callUs => 'Бізбен байланысу';
+  String get callUs => 'Бізге қоңырау шалыңыз';
 
   @override
   String get submit => 'Жіберу';
 
   @override
-  String get cancel => 'Бас тарту';
+  String get cancel => 'Болдырмау';
 
   @override
   String get save => 'Сақтау';
@@ -615,7 +615,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get tabProfile => 'Профиль';
 
   @override
-  String get minutes => 'минут';
+  String get minutes => 'мин';
 
   @override
   String get errorLoadingVideo => 'Бейнені жүктеу қатесі';
@@ -628,7 +628,7 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get resetPasswordAnswer =>
-      'Кіру экранына барыңыз және \"Құпия сөзді ұмыттыңыз\"ы басыңыз. Поштаңызға жіберілген нұсқаулықты орындаңыз.';
+      'Кіру экранына барыңыз және \\\"Құпия сөзді ұмыттыңыз\\\"ы басыңыз. Поштаңызға жіберілген нұсқаулықты орындаңыз.';
 
   @override
   String get changeEmailFaq =>
@@ -643,7 +643,7 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get updateAppAnswer =>
-      'App Store/Google Play бөлінді барыңыз, біздің қолданбасын іздеңіз және \"Жаңарту\"ды басыңыз. Қолданбаны ағымдық ұстау ең жақсы тәжірибесін қамтамасыз етеді.';
+      'App Store/Google Play бөлінді барыңыз, біздің қолданбасын іздеңіз және \\\"Жаңарту\\\"ды басыңыз. Қолданбаны ағымдық ұстау ең жақсы тәжірибесін қамтамасыз етеді.';
 
   @override
   String get verificationEmailFaq =>
@@ -651,7 +651,7 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get verificationEmailAnswer =>
-      'Спам/Қоршама папкасын тексеріңіз және дұрыс электрондық пошталарын енгіздіңіз. Қажет болса, растау экранында \"Қайта жіберу\"ді басыңыз.';
+      'Спам/Қоршама папкасын тексеріңіз және дұрыс электрондық пошталарын енгіздіңіз. Қажет болса, растау экранында \\\"Қайта жіберу\\\"ді басыңыз.';
 
   @override
   String get cancelSubscriptionFaq => 'Өзімнің жазылымды қалай бас тартам?';
@@ -793,7 +793,7 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get faqA1 =>
-      'Кіру экранына өтіп, \"Құпия сөзді ұмыттыңыз ба?\" батырмасын басыңыз. Поштаңызға жіберілген нұсқауларды орындаңыз.';
+      'Кіру экранына өтіп, \\\"Құпия сөзді ұмыттыңыз ба?\\\" батырмасын басыңыз. Поштаңызға жіберілген нұсқауларды орындаңыз.';
 
   @override
   String get faqQ2 =>
@@ -808,14 +808,14 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get faqA3 =>
-      'App Store/Google Play дүкеніне өтіп, қолданбамызды іздеп, \"Жаңарту\" батырмасын басыңыз.';
+      'App Store/Google Play дүкеніне өтіп, қолданбамызды іздеп, \\\"Жаңарту\\\" батырмасын басыңыз.';
 
   @override
   String get faqQ4 => 'Растау хатын неге алмадым?';
 
   @override
   String get faqA4 =>
-      'Спам/Қоқыс жәшігіңізді тексеріп, дұрыс пошта енгізгеніңізді тексеріңіз. Қажет болса, растау экранында \"Қайта жіберу\" батырмасын басыңыз.';
+      'Спам/Қоқыс жәшігіңізді тексеріп, дұрыс пошта енгізгеніңізді тексеріңіз. Қажет болса, растау экранында \\\"Қайта жіберу\\\" батырмасын басыңыз.';
 
   @override
   String get faqQ5 => 'Жазылымды қалай болдырмауға болады?';
@@ -1080,7 +1080,7 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get formatHintBody =>
-      '1. Сұрақ мәтіні?\nа) Вариант А\nб) Вариант Б\nв) Вариант В\nг) Вариант Г\n\nДұрыс жауапты А форматында белгілеңіз.';
+      '1. Сұрақ мәтіні?\\nа) Вариант А\\nб) Вариант Б\\nв) Вариант В\\nг) Вариант Г\\n\\nДұрыс жауапты А форматында белгілеңіз.';
 
   @override
   String get parsingFile => 'Файл талданып жатыр...';
@@ -1180,7 +1180,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get yesterday => 'Кеше';
 
   @override
-  String get areyousure => 'Are you sure you want to logout?';
+  String get areyousure => 'Жүйеден шыққыңыз келетініне сенімдісіз бе?';
 
   @override
   String get youCanNowAccessTheCourseContent =>
@@ -1211,4 +1211,174 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get noReviewsYet => 'Әзірге шолулар жоқ.';
+
+  @override
+  String get freeEnroll => 'Тегін тіркелу';
+
+  @override
+  String get enrollSuccess => 'Курсқа сәтті тіркелдіңіз!';
+
+  @override
+  String get enrollError => 'Тіркелу қатесі';
+
+  @override
+  String get lessonLocked => 'Сабақ бұғатталған';
+
+  @override
+  String get completePrevious => 'Алдымен алдыңғы сабақты аяқтаңыз';
+
+  @override
+  String get purchaseRequired => 'Сатып алу қажет';
+
+  @override
+  String get purchaseToContinue =>
+      'Барлық сабақтарға кіру үшін курсты сатып алыңыз';
+
+  @override
+  String get addSection => 'Бөлім қосу';
+
+  @override
+  String get sectionTitle => 'Бөлім атауы';
+
+  @override
+  String get deleteSection => 'Бөлімді жою?';
+
+  @override
+  String get deleteSectionConfirm =>
+      'Бұл бөлімдегі барлық сабақтар да жойылады.';
+
+  @override
+  String get addLessonToSection => 'Сабақ қосу';
+
+  @override
+  String get noSectionsYet => 'Бөлімдер жоқ';
+
+  @override
+  String get addSectionHint => '\'Бөлім қосу\' батырмасын басыңыз';
+
+  @override
+  String get curriculum => 'Оқу бағдарламасы';
+
+  @override
+  String get sectionsCount => 'бөлім';
+
+  @override
+  String get lessonsCount => 'сабақ';
+
+  @override
+  String get videoUploaded => 'Бейне жүктелді';
+
+  @override
+  String get freeLesson => 'Тегін';
+
+  @override
+  String get updateCategories => 'Санаттарды жаңарту';
+
+  @override
+  String get updateCategoriesConfirm =>
+      'Ескі санаттар бағдарламалау тілдерімен ауыстырылады.';
+
+  @override
+  String get myLearning => 'Менің оқуым';
+
+  @override
+  String get allTab => 'Барлығы';
+
+  @override
+  String get inProgressTab => 'Үдерісте';
+
+  @override
+  String get completedTab => 'Аяқталған';
+
+  @override
+  String get continueBtn => 'Жалғастыру';
+
+  @override
+  String get startBtn => 'Бастау';
+
+  @override
+  String get watchAgain => 'Қайта қарау';
+
+  @override
+  String get percentCompleted => '% аяқталды';
+
+  @override
+  String get findCourses => 'Курс табу';
+
+  @override
+  String get noCoursesMy => 'Курстар жоқ';
+
+  @override
+  String get enrollToCourse => 'Курсқа тіркеліп, оқуды бастаңыз';
+
+  @override
+  String get certificatePreview => 'Сертификатты алдын ала қарау';
+
+  @override
+  String get chooseFromGallery => 'Галереядан таңдау';
+
+  @override
+  String get takePhoto => 'Фото түсіру';
+
+  @override
+  String get noRecommendedCourses => 'Ұсынылған курстар жоқ.';
+
+  @override
+  String get pleaseSignIn => 'Аналитиканы көру үшін жүйеге кіріңіз';
+
+  @override
+  String get noCourseDataYet => 'Курс деректері жоқ';
+
+  @override
+  String get noRevenueDataYet => 'Табыс деректері жоқ';
+
+  @override
+  String get updateCategoriesTitle => 'Санаттарды жаңарту?';
+
+  @override
+  String get updateCategoriesBody =>
+      'Ескі санаттар бағдарламалау тілдерімен ауыстырылады: Python, JavaScript, Flutter, Dart, Java, C++, Kotlin, Swift';
+
+  @override
+  String get update => 'Жаңарту';
+
+  @override
+  String get deleteSectionBody => 'Бұл бөлімдегі барлық сабақтар да жойылады.';
+
+  @override
+  String get deleteCourse => 'Курсты жою';
+
+  @override
+  String get deleteCourseConfirm =>
+      'Бұл курсты жойғыңыз келетініне сенімдісіз бе?';
+
+  @override
+  String get enrolledSuccess => 'Курсқа сәтті тіркелдіңіз!';
+
+  @override
+  String get enrolledError => 'Тіркелу қатесі: ';
+
+  @override
+  String get noLessonsYet => 'Бастауға сабақтар жоқ.';
+
+  @override
+  String get freeEnrollBtn => 'Тегін тіркелу';
+
+  @override
+  String get materials => 'Материалдар';
+
+  @override
+  String get noLessonsInSection => 'Бұл бөлімде сабақтар жоқ';
+
+  @override
+  String get preview => 'Алдын ала қарау';
+
+  @override
+  String get videoUploadedBadge => 'Бейне жүктелді';
+
+  @override
+  String get freeBadge => 'Тегін';
+
+  @override
+  String get lessonsUnit => 'сабақ';
 }

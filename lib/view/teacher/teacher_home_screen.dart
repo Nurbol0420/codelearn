@@ -1,5 +1,6 @@
 import 'package:codelearn/core/theme/app_color.dart';
 import 'package:codelearn/core/utils/app_dialogs.dart';
+import 'package:codelearn/services/category_seed_service.dart';
 import 'package:codelearn/view/teacher/teacher_home/widgets/dashboard_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -52,6 +53,36 @@ class TeacherHomeScreen extends StatelessWidget {
                 DashboardCard(title: l10n.createQuiz, icon: Icons.quiz_outlined, onTap: () => Get.toNamed(AppRoutes.createQuiz)),
                 DashboardCard(title: l10n.myQuizzes, icon: Icons.bar_chart, onTap: () => Get.to(() => const TeacherQuizListScreen())),
                 DashboardCard(title: l10n.groupChat, icon: Icons.groups, onTap: () => Get.to(() => const GroupChatScreen())),
+                DashboardCard(
+                  title: 'Обновить категории',
+                  icon: Icons.category,
+                  onTap: () async {
+                    final confirm = await showDialog<bool>(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                        title: Text(l10n.updateCategoriesTitle),
+                        content: Text(l10n.updateCategoriesBody),
+                        actions: [
+                          TextButton(onPressed: () => Navigator.pop(context, false), child: Text(l10n.cancel)),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary, foregroundColor: Colors.white),
+                            onPressed: () => Navigator.pop(context, true),
+                            child: Text(l10n.update),
+                          ),
+                        ],
+                      ),
+                    );
+                    if (confirm == true) {
+                      try {
+                        await CategorySeedService.seedProgrammingCategories();
+                        Get.snackbar('✅', l10n.updateCategoriesTitle, backgroundColor: Colors.green, colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
+                      } catch (e) {
+                        Get.snackbar('Ошибка', '$e', backgroundColor: Colors.red, colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
+                      }
+                    }
+                  },
+                ),
               ]),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, mainAxisSpacing: 16, crossAxisSpacing: 16, childAspectRatio: 1,

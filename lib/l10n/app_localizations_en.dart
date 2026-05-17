@@ -193,7 +193,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get allCourses => 'All Courses';
 
   @override
-  String get seeAll => 'See All';
+  String get seeAll => 'See all';
 
   @override
   String get coursesCount => 'courses';
@@ -268,7 +268,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loadingCourse => 'Loading course details...';
 
   @override
-  String get buyNow => 'Buy now for';
+  String get buyNow => 'Buy Now';
 
   @override
   String get premiumCourse => 'PREMIUM COURSE';
@@ -617,7 +617,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tabProfile => 'Profile';
 
   @override
-  String get minutes => 'minutes';
+  String get minutes => 'min';
 
   @override
   String get errorLoadingVideo => 'Error loading video';
@@ -630,7 +630,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resetPasswordAnswer =>
-      'Go to the login screen and tap \"Forgot Password\". Follow the instructions sent to your email.';
+      'Go to the login screen and tap \\\"Forgot Password\\\". Follow the instructions sent to your email.';
 
   @override
   String get changeEmailFaq => 'How can I change my email or phone number?';
@@ -644,7 +644,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get updateAppAnswer =>
-      'Visit the App Store/Google Play, search for our app, and tap \"Update\". Keeping the app up to date ensures the best experience.';
+      'Visit the App Store/Google Play, search for our app, and tap \\\"Update\\\". Keeping the app up to date ensures the best experience.';
 
   @override
   String get verificationEmailFaq =>
@@ -652,7 +652,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get verificationEmailAnswer =>
-      'Please check your Spam/Junk folder and ensure you entered the correct email. If needed, tap \"Resend\" on the verification screen.';
+      'Please check your Spam/Junk folder and ensure you entered the correct email. If needed, tap \\\"Resend\\\" on the verification screen.';
 
   @override
   String get cancelSubscriptionFaq => 'How do I cancel my subscription?';
@@ -790,7 +790,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get faqA1 =>
-      'Go to the login screen and tap \"Forgot Password\". Follow the instructions sent to your email.';
+      'Go to the login screen and tap \\\"Forgot Password\\\". Follow the instructions sent to your email.';
 
   @override
   String get faqQ2 => 'How can I change my email or phone number?';
@@ -804,14 +804,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get faqA3 =>
-      'Visit the App Store/Google Play, search for our app, and tap \"Update\". Keeping the app up to date ensures the best experience.';
+      'Visit the App Store/Google Play, search for our app, and tap \\\"Update\\\". Keeping the app up to date ensures the best experience.';
 
   @override
   String get faqQ4 => 'Why didn\'t I receive the verification email?';
 
   @override
   String get faqA4 =>
-      'Please check your Spam/Junk folder and ensure you entered the correct email. If needed, tap \"Resend\" on the verification screen.';
+      'Please check your Spam/Junk folder and ensure you entered the correct email. If needed, tap \\\"Resend\\\" on the verification screen.';
 
   @override
   String get faqQ5 => 'How do I cancel my subscription?';
@@ -1075,7 +1075,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get formatHintBody =>
-      '1. Question text?\nA) variant a\nB) variant B\nV) variant B\nG) variant d\n\n denote the correct answer in format A.';
+      '1. Question text?\\nA) variant a\\nB) variant B\\nV) variant B\\nG) variant d\\n\\n denote the correct answer in format A.';
 
   @override
   String get parsingFile => 'Parsing file...';
@@ -1206,4 +1206,175 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noReviewsYet => 'No reviews yet.';
+
+  @override
+  String get freeEnroll => 'Enroll for Free';
+
+  @override
+  String get enrollSuccess => 'Successfully enrolled in the course!';
+
+  @override
+  String get enrollError => 'Enrollment error';
+
+  @override
+  String get lessonLocked => 'Lesson Locked';
+
+  @override
+  String get completePrevious => 'Please complete the previous lesson first';
+
+  @override
+  String get purchaseRequired => 'Purchase required';
+
+  @override
+  String get purchaseToContinue =>
+      'Please purchase this course to access all lessons';
+
+  @override
+  String get addSection => 'Add Section';
+
+  @override
+  String get sectionTitle => 'Section title';
+
+  @override
+  String get deleteSection => 'Delete Section?';
+
+  @override
+  String get deleteSectionConfirm =>
+      'All lessons in this section will also be deleted.';
+
+  @override
+  String get addLessonToSection => 'Add lesson';
+
+  @override
+  String get noSectionsYet => 'No sections yet';
+
+  @override
+  String get addSectionHint => 'Click \'Add Section\' to start';
+
+  @override
+  String get curriculum => 'Curriculum';
+
+  @override
+  String get sectionsCount => 'sections';
+
+  @override
+  String get lessonsCount => 'lessons';
+
+  @override
+  String get videoUploaded => 'Video uploaded';
+
+  @override
+  String get freeLesson => 'Free';
+
+  @override
+  String get updateCategories => 'Update Categories';
+
+  @override
+  String get updateCategoriesConfirm =>
+      'Old categories will be replaced with programming languages.';
+
+  @override
+  String get myLearning => 'My Learning';
+
+  @override
+  String get allTab => 'All';
+
+  @override
+  String get inProgressTab => 'In Progress';
+
+  @override
+  String get completedTab => 'Completed';
+
+  @override
+  String get continueBtn => 'Continue';
+
+  @override
+  String get startBtn => 'Start';
+
+  @override
+  String get watchAgain => 'Watch Again';
+
+  @override
+  String get percentCompleted => '% completed';
+
+  @override
+  String get findCourses => 'Find Courses';
+
+  @override
+  String get noCoursesMy => 'No courses yet';
+
+  @override
+  String get enrollToCourse => 'Enroll in a course and start learning';
+
+  @override
+  String get certificatePreview => 'Certificate Preview';
+
+  @override
+  String get chooseFromGallery => 'Choose from Gallery';
+
+  @override
+  String get takePhoto => 'Take a Photo';
+
+  @override
+  String get noRecommendedCourses => 'No recommended courses available.';
+
+  @override
+  String get pleaseSignIn => 'Please sign in to view analytics';
+
+  @override
+  String get noCourseDataYet => 'No course data yet';
+
+  @override
+  String get noRevenueDataYet => 'No revenue data yet';
+
+  @override
+  String get updateCategoriesTitle => 'Update Categories?';
+
+  @override
+  String get updateCategoriesBody =>
+      'Old categories will be replaced with programming languages: Python, JavaScript, Flutter, Dart, Java, C++, Kotlin, Swift';
+
+  @override
+  String get update => 'Update';
+
+  @override
+  String get deleteSectionBody =>
+      'All lessons in this section will also be deleted.';
+
+  @override
+  String get deleteCourse => 'Delete Course';
+
+  @override
+  String get deleteCourseConfirm =>
+      'Are you sure you want to delete this course?';
+
+  @override
+  String get enrolledSuccess => 'You have successfully enrolled in the course!';
+
+  @override
+  String get enrolledError => 'Enrollment error: ';
+
+  @override
+  String get noLessonsYet => 'No lessons yet to start.';
+
+  @override
+  String get freeEnrollBtn => 'Enroll for Free';
+
+  @override
+  String get materials => 'Materials';
+
+  @override
+  String get noLessonsInSection => 'No lessons in this section';
+
+  @override
+  String get preview => 'Preview';
+
+  @override
+  String get videoUploadedBadge => 'Video uploaded';
+
+  @override
+  String get freeBadge => 'Free';
+
+  @override
+  String get lessonsUnit => 'lessons';
 }

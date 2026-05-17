@@ -1,5 +1,6 @@
 import 'package:codelearn/bloc/profile/profile_bloc.dart';
 import 'package:codelearn/bloc/profile/profile_event.dart';
+import 'package:codelearn/l10n/app_localizations.dart';
 import 'package:codelearn/core/theme/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,7 +48,7 @@ class ProfilePictureBottomSheet extends StatelessWidget {
               backgroundColor: AppColors.primary,
               child: Icon(Icons.photo_library, color: Colors.white),
             ),
-            title: const Text('Choose from Gallery'),
+            title: Text(AppLocalizations.of(context)!.chooseFromGallery),
             onTap: () => _pickImage(context, ImageSource.gallery)
           ),
           const SizedBox(height: 8),
@@ -56,7 +57,7 @@ class ProfilePictureBottomSheet extends StatelessWidget {
               backgroundColor: AppColors.primary,
               child: Icon(Icons.camera_alt, color: Colors.white),
             ),
-            title: const Text('Take a Photo'),
+            title: Text(AppLocalizations.of(context)!.takePhoto),
               onTap: () => _pickImage(context, ImageSource.camera)
           ),
           const SizedBox(height: 8),

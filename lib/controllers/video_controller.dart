@@ -53,35 +53,43 @@ class LessonVideoController {
       );
       final isEnrolled = await _courseRepository.isEnrolled(courseId, user.uid);
 
+      // ── 1. Premium курс — сначала проверяем оплату ──────────────────
+      if (course.isPremium && !isEnrolled) {
+        // Allow preview lessons without purchase
+        final lesson = course.lessons.firstWhere(
+          (l) => l.id == lessonId,
+          orElse: () => course.lessons.first,
+        );
+        if (!lesson.isPreview) {
+          onLoadingChanged(false);
+          Get.back();
+          Get.toNamed(
+            AppRoutes.payment,
+            arguments: {
+              'courseId': courseId,
+              'courseName': course.title,
+              'price': course.price,
+            },
+          );
+          return;
+        }
+      }
+
+      // ── 2. Проверяем разблокирован ли урок (порядок уроков) ─────────
       if (!isUnlocked) {
         onLoadingChanged(false);
         Get.back();
         Get.snackbar(
-          'Lesson Locked',
-          'Please complete previous lessons first',
+          'Урок заблокирован',
+          'Сначала пройдите предыдущий урок',
           backgroundColor: Colors.red,
           colorText: Colors.white,
         );
         return;
       }
 
-      if (course.isPremium && !isEnrolled) {
-        onLoadingChanged(false);
-        Get.back();
-        Get.toNamed(
-          AppRoutes.payment,
-          arguments: {
-            'courseId': courseId,
-            'courseName': course.title,
-            'price': course.price,
-          },
-        );
-        return;
-      }
-
-      if (!course.isPremium &&
-          !isEnrolled &&
-          course.lessons.first.id == lessonId) {
+      // ── 3. Бесплатный курс — автоматическая запись при первом уроке ──
+      if (!course.isPremium && !isEnrolled) {
         await _courseRepository.enrollInCourse(courseId, user.uid);
       }
 

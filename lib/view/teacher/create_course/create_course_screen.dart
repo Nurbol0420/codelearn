@@ -17,6 +17,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:uuid/uuid.dart';
 import 'package:video_player/video_player.dart';
 import '../../../core/theme/app_color.dart';
@@ -301,11 +302,11 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Учебная программа', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.primary)),
+            Text(AppLocalizations.of(context)!.curriculum, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.primary)),
             ElevatedButton.icon(
               onPressed: _addSection,
               icon: const Icon(Icons.add, size: 18, color: Colors.white),
-              label: const Text('Добавить раздел', style: TextStyle(color: Colors.white)),
+              label: Text(AppLocalizations.of(context)!.addSection, style: const TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
             ),
           ],
@@ -330,9 +331,9 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                 children: [
                   Icon(Icons.view_list_outlined, size: 48, color: Colors.grey[400]),
                   const SizedBox(height: 12),
-                  const Text('Нет разделов', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                  Text(AppLocalizations.of(context)!.noSectionsYet, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
                   const SizedBox(height: 4),
-                  const Text('Нажмите "Добавить раздел" чтобы начать', style: TextStyle(color: AppColors.secondary, fontSize: 13)),
+                  Text(AppLocalizations.of(context)!.addSectionHint, style: const TextStyle(color: AppColors.secondary, fontSize: 13)),
                 ],
               ),
             ),
@@ -440,7 +441,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                   children: [
                     Icon(Icons.play_circle_outline, color: Colors.grey[400], size: 20),
                     const SizedBox(width: 8),
-                    Text('Нет уроков в этом разделе', style: TextStyle(color: Colors.grey[500], fontSize: 13)),
+                    Text(AppLocalizations.of(context)!.noLessonsInSection, style: TextStyle(color: Colors.grey[500], fontSize: 13)),
                   ],
                 ),
               ),
@@ -455,7 +456,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
               child: OutlinedButton.icon(
                 onPressed: () => _addLessonToSection(section.id),
                 icon: const Icon(Icons.add, size: 16, color: AppColors.primary),
-                label: const Text('Добавить урок', style: TextStyle(color: AppColors.primary, fontSize: 13)),
+                label: Text(AppLocalizations.of(context)!.addLessonToSection, style: const TextStyle(color: AppColors.primary, fontSize: 13)),
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: AppColors.primary),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -496,21 +497,21 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
               if (lesson.duration > 0) ...[
                 const Icon(Icons.access_time, size: 11, color: AppColors.secondary),
                 const SizedBox(width: 3),
-                Text('${lesson.duration} мин', style: const TextStyle(fontSize: 11, color: AppColors.secondary)),
+                Text('\${lesson.duration} \${AppLocalizations.of(context)!.minutes}', style: const TextStyle(fontSize: 11, color: AppColors.secondary)),
                 const SizedBox(width: 8),
               ],
               if (lesson.isPreview)
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
                   decoration: BoxDecoration(color: Colors.blue.withOpacity(0.1), borderRadius: BorderRadius.circular(4)),
-                  child: const Text('Бесплатно', style: TextStyle(color: Colors.blue, fontSize: 10, fontWeight: FontWeight.bold)),
+                  child: Text(AppLocalizations.of(context)!.freeBadge, style: const TextStyle(color: Colors.blue, fontSize: 10, fontWeight: FontWeight.bold)),
                 ),
               if (lesson.videoUrl.isNotEmpty) ...[
                 const SizedBox(width: 4),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
                   decoration: BoxDecoration(color: Colors.green.withOpacity(0.1), borderRadius: BorderRadius.circular(4)),
-                  child: const Text('Видео загружено', style: TextStyle(color: Colors.green, fontSize: 10, fontWeight: FontWeight.bold)),
+                  child: Text(AppLocalizations.of(context)!.videoUploadedBadge, style: const TextStyle(color: Colors.green, fontSize: 10, fontWeight: FontWeight.bold)),
                 ),
               ],
             ],
@@ -518,7 +519,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text('Preview'),
+              Text(AppLocalizations.of(context)!.preview),
               Transform.scale(
                 scale: 0.8,
                 child: Switch(
@@ -593,7 +594,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
               }),
             const SizedBox(height: 12),
             // Resources
-            const Text('Материалы', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.primary)),
+            Text(AppLocalizations.of(context)!.materials, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.primary)),
             const SizedBox(height: 6),
             ...lesson.resources.map((r) => ListTile(
               dense: true,
@@ -636,10 +637,10 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
       context: context,
       builder: (_) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text('Удалить раздел?'),
-        content: const Text('Все уроки в этом разделе тоже будут удалены.'),
+        title: Text(AppLocalizations.of(context)!.deleteSection),
+        content: Text(AppLocalizations.of(context)!.deleteSectionBody),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Отмена')),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text(AppLocalizations.of(context)!.cancel)),
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red, foregroundColor: Colors.white),
             onPressed: () {
@@ -657,7 +658,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                 _sectionExpanded.remove(sectionId);
               });
             },
-            child: const Text('Удалить'),
+            child: Text(AppLocalizations.of(context)!.delete),
           ),
         ],
       ),
@@ -1039,16 +1040,40 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
               isExpanded: true,
               hint: const Text('Select a category'),
               items: _categories.map<DropdownMenuItem<String>>((category) {
+                final name = category['name'] as String;
+                final logoUrl = _getCategoryLogoUrl(name);
                 return DropdownMenuItem<String>(
                   value: category['id'] as String,
                   child: Row(
                     children: [
-                      Icon(
-                        _getIconData(category['icon'] as String),
-                        color: AppColors.primary,
+                      SizedBox(
+                        width: 28,
+                        height: 28,
+                        child: logoUrl != null
+                            ? SvgPicture.network(
+                                logoUrl,
+                                width: 28,
+                                height: 28,
+                                placeholderBuilder: (_) => const SizedBox(
+                                  width: 28, height: 28,
+                                  child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                                ),
+                              )
+                            : Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.primary,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    name.length >= 2 ? name.substring(0, 2).toUpperCase() : name.toUpperCase(),
+                                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 10),
+                                  ),
+                                ),
+                              ),
                       ),
-                      const SizedBox(width: 8),
-                      Text(category['name'] as String),
+                      const SizedBox(width: 10),
+                      Text(name),
                     ],
                   ),
                 );
@@ -1071,8 +1096,35 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
   }
 
   IconData _getIconData(String iconCode) {
-    //convert the string hex code to integer
-    return IconData(int.parse(iconCode), fontFamily: 'MaterialIcons');
+    try {
+      final code = iconCode.startsWith('0x')
+          ? int.parse(iconCode.substring(2), radix: 16)
+          : int.parse(iconCode);
+      return IconData(code, fontFamily: 'MaterialIcons');
+    } catch (_) {
+      return Icons.category;
+    }
+  }
+
+  String? _getCategoryLogoUrl(String name) {
+    const logos = {
+      'python':     'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
+      'javascript': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
+      'flutter':    'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg',
+      'dart':       'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dart/dart-original.svg',
+      'java':       'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg',
+      'c++':        'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg',
+      'kotlin':     'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg',
+      'swift':      'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg',
+      'typescript': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
+      'react':      'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
+      'go':         'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg',
+      'php':        'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg',
+      'ruby':       'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ruby/ruby-original.svg',
+      'html':       'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg',
+      'css':        'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg',
+    };
+    return logos[name.toLowerCase()];
   }
 
   Widget _buildPremiumSwitch() {

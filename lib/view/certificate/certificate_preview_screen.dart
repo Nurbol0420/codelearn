@@ -1,4 +1,5 @@
 import 'package:codelearn/bloc/auth/auth_bloc.dart';
+import 'package:codelearn/l10n/app_localizations.dart';
 import 'package:codelearn/repositories/instructor_repository.dart';
 import 'package:codelearn/view/certificate/widget/certificate_widget.dart';
 import 'package:flutter/material.dart';
@@ -107,7 +108,7 @@ class _CertificatePreviewScreenState extends State<CertificatePreviewScreen> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        title: const Text('Certificate Preview'),
+        title: Text(AppLocalizations.of(context)!.certificatePreview),
         actions: [
           if (!_isGenerating)
             IconButton(

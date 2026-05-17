@@ -177,10 +177,25 @@ class AuthRepository {
       updates['updatedAt'] = Timestamp.now();
 
       if (updates.isNotEmpty) {
+        // Update main users collection
         await _firestore
             .collection('users')
             .doc(user.uid)
             .set(updates, SetOptions(merge: true));
+
+        // Sync to role-specific collection (students/teachers)
+        final doc = await _firestore.collection('users').doc(user.uid).get();
+        if (doc.exists) {
+          // Sync to subcollection: users/{uid}/students or users/{uid}/teachers
+        final userModel = UserModel.fromFirestore(doc);
+        final roleCollection = userModel.role == UserRole.teacher ? 'teachers' : 'students';
+        await _firestore
+            .collection('users')
+            .doc(user.uid)
+            .collection(roleCollection)
+            .doc(user.uid)
+            .set(updates, SetOptions(merge: true));
+        }
       }
     } on FirebaseAuthException catch (e) {
       throw _handleAuthException(e);
@@ -229,9 +244,12 @@ class AuthRepository {
   }
 
   Future<void> _syncRoleCollection(UserModel user) async {
-    final collection = user.role == UserRole.teacher ? 'teachers' : 'students';
+    final roleCollection = user.role == UserRole.teacher ? 'teachers' : 'students';
+    // Save in subcollection: users/{uid}/students/{uid} or users/{uid}/teachers/{uid}
     await _firestore
-        .collection(collection)
+        .collection('users')
+        .doc(user.uid)
+        .collection(roleCollection)
         .doc(user.uid)
         .set(user.toFirestore(), SetOptions(merge: true));
   }
