@@ -1,3 +1,4 @@
+import 'course_section.dart';
 import 'lesson.dart';
 
 class Course {
@@ -19,6 +20,7 @@ class Course {
   final DateTime updatedAt;
   final bool isPremium;
   final List<String> prerequisites;
+  final List<CourseSection> sections; // Udemy-style sections
 
   Course({
     required this.id,
@@ -39,6 +41,7 @@ class Course {
     required this.updatedAt,
     this.isPremium = false,
     this.prerequisites = const [],
+    this.sections = const [],
 });
   factory Course.fromJson(Map<String, dynamic> json) => Course (
     id: json['id'],
@@ -61,6 +64,9 @@ class Course {
     updatedAt: DateTime.parse(json['updatedAt']),
     isPremium: json['isPremium'] ?? false,
     prerequisites: List<String>.from(json['prerequisites'] ?? []),
+    sections: (json['sections'] as List? ?? [])
+        .map((s) => CourseSection.fromJson(s as Map<String, dynamic>))
+        .toList(),
   );
 
   Map<String, dynamic> toJson() =>
@@ -83,5 +89,6 @@ class Course {
         'updatedAt': updatedAt.toIso8601String(),
         'isPremium': isPremium,
         'prerequisites' : prerequisites,
+        'sections': sections.map((s) => s.toJson()).toList(),
       };
 }
